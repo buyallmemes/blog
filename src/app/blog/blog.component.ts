@@ -67,7 +67,8 @@ export class BlogComponent implements OnInit {
   }
 
   private loadPosts() {
-    this.posts = this.postService.getPosts();
+    this.postService.getPosts()
+      .subscribe(posts => this.posts = posts);
   }
 
 }
