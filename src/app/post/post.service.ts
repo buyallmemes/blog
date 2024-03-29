@@ -1,28 +1,33 @@
 import {Injectable} from '@angular/core';
 import {Post} from "./post";
-import {HttpClient} from "@angular/common/http";
-import {forkJoin, map, Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  post_files: string[] = [
-    "assets/posts/29.03.2024.1.md",
+  posts: string[] = [
+    `# Hello, world!
+I hate frontend. But at least, I figured out how to use markdown to render content, so I don't have to struggle with WYSIWYG editors, at least now.
+
+But where was I... Oh yes, **_BLOG_**! I'm building a blog - something you've never heard of or seen before, right? I hope you can read through my sarcasm, I'm using it a lot, and I'm not going to tell you where - figure it out by yourself.
+
+The idea is simple - share **my** knowledge and opinions on software stuff. And there's no better way to do it, but via examples. So, let's do it!
+
+I'm going to build a blog, while covering certain aspects of the building process in this blog. So you could see the pattern in action. I'm going to start simple, heck, I'm a backend developer, who claims to be proficient in Java and distributed systems, but I'm writing this in .MD file, which I will copy-paste into a \`component\` file.
+
+I want to make this process agile and iterative while doing only what is totally necessary to build what I want now.
+So, for now, it's a single-repo-almost-a-static-page-thingy - https://github.com/buyallmemes/blog.
+
+
+Also, I kinda enjoy writing from time to time + I'm a programmer, so why not combine the best of both worlds - create a place where a can park some of my thoughts for good.
+`,
   ];
 
-  constructor(private httpClient: HttpClient) {
-  }
-
   public getPosts(): Observable<Post[]> {
-    let posts = this.post_files.map(file => this.getFileContent(file));
-    return forkJoin(posts);
-  }
-
-  private getFileContent(file: string): Observable<Post> {
-    return this.httpClient.get(file, {responseType: 'text'})
-      .pipe(map(data => {
-        return {content: data}
-      }));
+    let posts = this.posts.map(post => {
+      return {content: post}
+    });
+    return of(posts);
   }
 }
