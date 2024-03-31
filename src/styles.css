@@ -5,4 +5,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 code{
   color: #d63384;
+  border-radius: 3px;
+  border: 1px solid #b9b5b7;
 }
