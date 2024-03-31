@@ -17,7 +17,7 @@ describe('AppComponent', () => {
   it(`should have the 'blog' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('blog');
+    expect(app.title).toEqual('BuyAllMemes');
   });
 
   it('should render title', () => {
