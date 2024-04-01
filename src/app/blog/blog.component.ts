@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import {
   MatCard,
   MatCardActions,
@@ -17,12 +17,13 @@ import {MatInput} from "@angular/material/input";
 import {MatSlider} from "@angular/material/slider";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatPaginator} from "@angular/material/paginator";
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage, ViewportScroller} from "@angular/common";
 import {MarkdownComponent} from "ngx-markdown";
 import {PostComponent} from "../post/post.component";
 import {Post} from "../post/post";
 import {PostService} from "../post/post.service";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-blog',
@@ -59,23 +60,40 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css'
 })
-export class BlogComponent implements OnInit {
+export class BlogComponent implements OnInit, AfterViewChecked {
   posts: Post[] = [];
   isLoading = true;
+  fragment: string | null = "";
 
-  constructor(private postService: PostService) {
+  constructor(private postService: PostService,
+              private scroller: ViewportScroller,
+              private route: ActivatedRoute
+  ) {
   }
+
+  ngAfterViewChecked(): void {
+    this.isLoading = false;
+    if (this.fragment) {
+      this.scroller.scrollToAnchor(this.fragment);
+    }
+  }
+
 
   ngOnInit(): void {
     this.loadPosts();
+    this.extractFragment();
   }
 
   private loadPosts() {
     this.postService.getPosts()
         .subscribe(posts => {
           this.posts = posts
-          this.isLoading = false;
         });
   }
 
+  private extractFragment() {
+    this.route.fragment.subscribe(fragment => {
+      this.fragment = fragment;
+    });
+  }
 }
