@@ -17,11 +17,12 @@ import {MatInput} from "@angular/material/input";
 import {MatSlider} from "@angular/material/slider";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatPaginator} from "@angular/material/paginator";
-import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {MarkdownComponent} from "ngx-markdown";
 import {PostComponent} from "../post/post.component";
 import {Post} from "../post/post";
 import {PostService} from "../post/post.service";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-blog',
@@ -51,13 +52,16 @@ import {PostService} from "../post/post.service";
     NgOptimizedImage,
     MarkdownComponent,
     PostComponent,
-    NgForOf
+    NgForOf,
+    MatProgressSpinner,
+    NgIf
   ],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css'
 })
 export class BlogComponent implements OnInit {
   posts: Post[] = [];
+  isLoading = true;
 
   constructor(private postService: PostService) {
   }
@@ -68,7 +72,10 @@ export class BlogComponent implements OnInit {
 
   private loadPosts() {
     this.postService.getPosts()
-      .subscribe(posts => this.posts = posts);
+        .subscribe(posts => {
+          this.posts = posts
+          this.isLoading = false;
+        });
   }
 
 }

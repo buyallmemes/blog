@@ -2,6 +2,7 @@
 
 <p>Here are some posts:</p>
 
+<mat-spinner *ngIf="isLoading"></mat-spinner>
 <div *ngFor="let post of posts">
   <app-post [post]="post"></app-post>
 </div>
