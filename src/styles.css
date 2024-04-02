@@ -1,10 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
 
-code{
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+code {
   color: #d63384;
   border-radius: 3px;
   border: 1px solid #b9b5b7;
+}
+
+
+/* Hide anchor links by default */
+.anchor {
+  position: relative;
+  padding-right: 25px; /* Adjust the padding to create space for the anchor icon */
+  visibility: hidden;
+}
+
+/* Show anchor links when hovering over headers */
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+  visibility: visible;
+}
+
+/* Styles for the anchor icon */
+.anchor::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 20px; /* Width of the anchor icon */
+  height: 20px; /* Height of the anchor icon */
+  background-image: url("assets/anchor-link.svg"); /* Replace with the path to your chain link icon */
+  background-size: contain; /* Ensure the background image fits within the specified width and height */
+  background-repeat: no-repeat; /* Prevent the background image from repeating */
+}
+
+/* Optional: Adjust the styles of the anchor text */
+.anchor {
+  color: #333; /* Change the color of the anchor text */
+  text-decoration: none; /* Remove underline from the anchor text */
+}
+
+.anchor:hover {
+  text-decoration: underline; /* Add underline on hover */
 }

@@ -85,7 +85,8 @@ export class BlogComponent implements OnInit, AfterViewChecked {
   }
 
   private loadPosts() {
-    this.postService.getPosts()
+    this.postService.
+    getPosts()
         .subscribe(posts => {
           this.posts = posts
         });
