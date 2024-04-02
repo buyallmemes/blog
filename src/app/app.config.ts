@@ -1,5 +1,5 @@
 import {ApplicationConfig, importProvidersFrom, SecurityContext} from '@angular/core';
-import {ExtraOptions, provideRouter, withInMemoryScrolling} from '@angular/router';
+import {provideRouter, withInMemoryScrolling} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
