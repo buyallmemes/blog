@@ -7,11 +7,10 @@ import {MarkdownModule} from "ngx-markdown";
 import {provideHttpClient, withFetch} from "@angular/common/http";
 
 export const appConfig: ApplicationConfig = {
-    providers: [
-      provideRouter(routes, withInMemoryScrolling({anchorScrolling: 'enabled'})),
-      provideAnimationsAsync(),
-      importProvidersFrom(MarkdownModule.forRoot({sanitize: SecurityContext.NONE})),
-      provideHttpClient(withFetch())
-    ]
-  }
-;
+  providers: [
+    provideRouter(routes, withInMemoryScrolling({anchorScrolling: 'enabled'})),
+    provideAnimationsAsync(),
+    importProvidersFrom(MarkdownModule.forRoot({sanitize: SecurityContext.NONE})),
+    provideHttpClient(withFetch())
+  ]
+};
