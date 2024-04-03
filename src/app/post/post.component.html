@@ -1,7 +1,7 @@
 <div *ngIf="post">
   <mat-card>
     <mat-card-content>
-      <markdown>{{ post.content }}</markdown>
+      <div [innerHTML]="post.content | SafeHtml"></div>
     </mat-card-content>
   </mat-card>
   <div class="flex-container"></div>

@@ -18,7 +18,6 @@ import {MatSlider} from "@angular/material/slider";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatPaginator} from "@angular/material/paginator";
 import {NgForOf, NgIf, NgOptimizedImage, ViewportScroller} from "@angular/common";
-import {MarkdownComponent} from "ngx-markdown";
 import {PostComponent} from "../post/post.component";
 import {Post} from "../post/post";
 import {PostService} from "../post/post.service";
@@ -51,7 +50,6 @@ import {ActivatedRoute} from "@angular/router";
     MatFabButton,
     MatPaginator,
     NgOptimizedImage,
-    MarkdownComponent,
     PostComponent,
     NgForOf,
     MatProgressSpinner,
@@ -85,8 +83,7 @@ export class BlogComponent implements OnInit, AfterViewChecked {
   }
 
   private loadPosts() {
-    this.postService.
-    getPosts()
+    this.postService.getPosts()
         .subscribe(posts => {
           this.posts = posts
         });
