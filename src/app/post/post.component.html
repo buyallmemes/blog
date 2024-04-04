@@ -1,5 +1,14 @@
 <div *ngIf="post">
   <mat-card>
+    <mat-card-header>
+      <mat-card-title id="{{post.anchor}}">
+        {{ post.title }}
+        <a href="{{'#'+post.anchor}}" class="anchor"></a>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <span>{{ post.date }}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
     <mat-card-content>
       <div [innerHTML]="post.content | SafeHtml"></div>
     </mat-card-content>

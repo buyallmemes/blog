@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {MatCard, MatCardContent} from "@angular/material/card";
+import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {Post} from "./post";
 import {NgIf} from "@angular/common";
 import {SafeHtmlPipe} from "./safehtmlpipe";
@@ -11,7 +11,10 @@ import {SafeHtmlPipe} from "./safehtmlpipe";
     MatCard,
     MatCardContent,
     NgIf,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    MatCardSubtitle,
+    MatCardTitle,
+    MatCardHeader
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.css'

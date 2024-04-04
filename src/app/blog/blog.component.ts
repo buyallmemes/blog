@@ -20,9 +20,10 @@ import {MatPaginator} from "@angular/material/paginator";
 import {NgForOf, NgIf, NgOptimizedImage, ViewportScroller} from "@angular/common";
 import {PostComponent} from "../post/post.component";
 import {Post} from "../post/post";
-import {PostService} from "../post/post.service";
+import {BlogService} from "./blog.service";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ActivatedRoute} from "@angular/router";
+import {HighlightService} from "./highlight.service";
 
 @Component({
   selector: 'app-blog',
@@ -63,9 +64,10 @@ export class BlogComponent implements OnInit, AfterViewChecked {
   isLoading = true;
   fragment: string | null = "";
 
-  constructor(private postService: PostService,
+  constructor(private postService: BlogService,
               private scroller: ViewportScroller,
-              private route: ActivatedRoute
+              private route: ActivatedRoute,
+              private highlightService: HighlightService
   ) {
   }
 
@@ -74,6 +76,7 @@ export class BlogComponent implements OnInit, AfterViewChecked {
     if (this.fragment) {
       this.scroller.scrollToAnchor(this.fragment);
     }
+    this.highlightService.highlightAll();
   }
 
 
