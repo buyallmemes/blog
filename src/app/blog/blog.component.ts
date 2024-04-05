@@ -62,7 +62,6 @@ import {HighlightService} from "./highlight.service";
 })
 export class BlogComponent implements OnInit, AfterViewChecked {
   posts: Post[] = [];
-  isLoading = false;
   fragment: string | null = "";
 
   constructor(private postService: BlogService,
@@ -85,8 +84,10 @@ export class BlogComponent implements OnInit, AfterViewChecked {
     this.extractFragment();
   }
 
-  private async loadPosts() {
-    this.posts = await this.postService.getPosts();
+  private loadPosts() {
+    this.route.data.subscribe(({posts}) => {
+      this.posts = posts;
+    });
   }
 
   private extractFragment() {
