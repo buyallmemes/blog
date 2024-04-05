@@ -17,7 +17,7 @@ import {MatInput} from "@angular/material/input";
 import {MatSlider} from "@angular/material/slider";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatPaginator} from "@angular/material/paginator";
-import {NgForOf, NgIf, NgOptimizedImage, ViewportScroller} from "@angular/common";
+import {AsyncPipe, NgForOf, NgIf, NgOptimizedImage, ViewportScroller} from "@angular/common";
 import {PostComponent} from "../post/post.component";
 import {Post} from "../post/post";
 import {BlogService} from "./blog.service";
@@ -54,14 +54,15 @@ import {HighlightService} from "./highlight.service";
     PostComponent,
     NgForOf,
     MatProgressSpinner,
-    NgIf
+    NgIf,
+    AsyncPipe
   ],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css'
 })
 export class BlogComponent implements OnInit, AfterViewChecked {
   posts: Post[] = [];
-  isLoading = true;
+  isLoading = false;
   fragment: string | null = "";
 
   constructor(private postService: BlogService,
@@ -72,7 +73,6 @@ export class BlogComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    this.isLoading = false;
     if (this.fragment) {
       this.scroller.scrollToAnchor(this.fragment);
     }
@@ -85,11 +85,8 @@ export class BlogComponent implements OnInit, AfterViewChecked {
     this.extractFragment();
   }
 
-  private loadPosts() {
-    this.postService.getPosts()
-        .subscribe(posts => {
-          this.posts = posts
-        });
+  private async loadPosts() {
+    this.posts = await this.postService.getPosts();
   }
 
   private extractFragment() {
