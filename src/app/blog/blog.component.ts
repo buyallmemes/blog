@@ -19,11 +19,10 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {MatPaginator} from "@angular/material/paginator";
 import {AsyncPipe, NgForOf, NgIf, NgOptimizedImage, ViewportScroller} from "@angular/common";
 import {PostComponent} from "../post/post.component";
-import {Post} from "../post/post";
-import {BlogService} from "./blog.service";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ActivatedRoute} from "@angular/router";
 import {HighlightService} from "./highlight.service";
+import {Blog} from "./blog";
 
 @Component({
   selector: 'app-blog',
@@ -61,11 +60,10 @@ import {HighlightService} from "./highlight.service";
   styleUrl: './blog.component.css'
 })
 export class BlogComponent implements OnInit, AfterViewChecked {
-  posts: Post[] = [];
+  blog?: Blog;
   fragment: string | null = "";
 
-  constructor(private postService: BlogService,
-              private scroller: ViewportScroller,
+  constructor(private scroller: ViewportScroller,
               private route: ActivatedRoute,
               private highlightService: HighlightService
   ) {
@@ -85,8 +83,8 @@ export class BlogComponent implements OnInit, AfterViewChecked {
   }
 
   private loadPosts() {
-    this.route.data.subscribe(({posts}) => {
-      this.posts = posts;
+    this.route.data.subscribe(({blog}) => {
+      this.blog = blog;
     });
   }
 

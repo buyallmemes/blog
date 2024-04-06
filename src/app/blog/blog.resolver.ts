@@ -1,11 +1,11 @@
 import {ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot} from "@angular/router";
-import {Post} from "../post/post";
 import {BlogService} from "./blog.service";
 import {inject} from "@angular/core";
+import {Blog} from "./blog";
 
-export const blogResolver: ResolveFn<Post[]> = (
+export const blogResolver: ResolveFn<Blog> = (
   route: ActivatedRouteSnapshot, state: RouterStateSnapshot
 ) => {
   return inject(BlogService)
-    .getPosts();
+    .fetchBlog();
 };

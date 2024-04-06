@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Post} from "../post/post";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
+import {Blog} from "./blog";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class BlogService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public getPosts(): Observable<Post[]> {
-    return this.httpClient.get<Post[]>(this.blog_api_url);
+  public fetchBlog(): Observable<Blog> {
+    return this.httpClient.get<Blog>(this.blog_api_url);
   }
 }
