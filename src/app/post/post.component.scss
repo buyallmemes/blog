@@ -4,3 +4,15 @@
   flex-wrap: wrap;
   padding: 16px;
 }
+
+.title-spacer {
+  flex: 1 1 auto;
+}
+
+.post-header {
+  display: block;
+}
+
+.post-title {
+  display: flex;
+}

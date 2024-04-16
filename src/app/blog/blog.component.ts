@@ -23,6 +23,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ActivatedRoute} from "@angular/router";
 import {HighlightService} from "./highlight.service";
 import {Blog} from "./blog";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-blog',
@@ -65,13 +66,17 @@ export class BlogComponent implements OnInit, AfterViewChecked {
 
   constructor(private scroller: ViewportScroller,
               private route: ActivatedRoute,
-              private highlightService: HighlightService
+              private highlightService: HighlightService,
+              private titleService: Title
   ) {
   }
 
   ngAfterViewChecked(): void {
     if (this.fragment) {
       this.scroller.scrollToAnchor(this.fragment);
+      this.titleService.setTitle(`BuyAllMemes Blog - ${this.blog?.posts.find(post => post.anchor === this.fragment)?.title}`);
+    } else {
+      this.titleService.setTitle(`BuyAllMemes Blog`);
     }
     this.highlightService.highlightAll();
   }
