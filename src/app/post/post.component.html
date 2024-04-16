@@ -4,6 +4,13 @@
       <mat-card-title id="{{post.anchor}}">
         {{ post.title }}
         <a href="{{'#'+post.anchor}}" class="anchor"></a>
+        <share-buttons [theme]="'material-light'"
+                       [include]="['linkedin']"
+                       [show]="1"
+                       [url]="'https://buyallmemes.com'"
+                       [title]="'BuyAllMemes'"
+                       [autoSetMeta]="false"
+        ></share-buttons>
       </mat-card-title>
       <mat-card-subtitle>
         <span>{{ post.date }}</span>

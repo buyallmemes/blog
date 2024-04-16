@@ -2,6 +2,7 @@
 
 @import "prismjs/plugins/toolbar/prism-toolbar.css";
 @import "prismjs/themes/prism.css";
+@import 'ngx-sharebuttons/themes/material.scss';
 
 html, body {
   height: 100%;
@@ -60,7 +61,7 @@ blockquote {
   padding: 0 1em;
 }
 
-.mat-mdc-card-content img{
+.mat-mdc-card-content img {
   max-width: 100%;
   height: auto;
 }

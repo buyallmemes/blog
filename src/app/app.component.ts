@@ -11,7 +11,7 @@ import {NavigationComponent} from "./navigation/navigation.component";
   standalone: true,
   imports: [RouterOutlet, MatToolbar, BlogComponent, MatIcon, MatIconButton, NavigationComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title: String = 'BuyAllMemes';

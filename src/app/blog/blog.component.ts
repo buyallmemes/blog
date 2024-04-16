@@ -57,7 +57,7 @@ import {Blog} from "./blog";
     AsyncPipe
   ],
   templateUrl: './blog.component.html',
-  styleUrl: './blog.component.css'
+  styleUrl: './blog.component.scss'
 })
 export class BlogComponent implements OnInit, AfterViewChecked {
   blog?: Blog;

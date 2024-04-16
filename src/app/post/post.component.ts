@@ -3,6 +3,7 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} f
 import {Post} from "./post";
 import {NgIf} from "@angular/common";
 import {SafeHtmlPipe} from "./safehtmlpipe";
+import {ShareButtonsModule} from "ngx-sharebuttons/buttons";
 
 @Component({
   selector: 'app-post',
@@ -14,10 +15,11 @@ import {SafeHtmlPipe} from "./safehtmlpipe";
     SafeHtmlPipe,
     MatCardSubtitle,
     MatCardTitle,
-    MatCardHeader
+    MatCardHeader,
+    ShareButtonsModule
   ],
   templateUrl: './post.component.html',
-  styleUrl: './post.component.css'
+  styleUrl: './post.component.scss'
 })
 export class PostComponent {
   @Input() post?: Post;
