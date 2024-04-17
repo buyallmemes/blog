@@ -50,7 +50,7 @@ const LINKEDIN_BUTTON = {
     description: 'text'
   },
   share: {
-    desktop: 'https://www.linkedin.com/shareArticle?'
+    desktop: 'https://www.linkedin.com/shareArticle?mini=true&',
   }
 };
 
