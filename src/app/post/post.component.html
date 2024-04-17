@@ -2,16 +2,15 @@
   <mat-card>
     <mat-card-header class="post-header">
       <mat-card-title class="post-title" id="{{post.anchor}}">
-        {{ post.title }}
-        <a href="{{'#'+post.anchor}}" class="anchor"></a>
+        <span>{{ post.title }}</span>
         <span class="title-spacer"></span>
         <share-buttons class="share-buttons"
                        [theme]="'material-light'"
-                       [include]="['linkedin']"
-                       [show]="1"
+                       [include]="['copy','linkedin']"
+                       [show]="2"
+                       [description]="postShareTitle"
                        [url]="'https://buyallmemes.com/#'+post.anchor"
-                       [title]="'BuyAllMemes - '+post.title"
-                       [autoSetMeta]="false"
+                       [title]="postShareTitle"
         ></share-buttons>
       </mat-card-title>
       <mat-card-subtitle>

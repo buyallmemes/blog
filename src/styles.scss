@@ -18,43 +18,6 @@ code {
   background: lightgrey;
 }
 
-
-/* Hide anchor links by default */
-.anchor {
-  position: relative;
-  padding-right: 25px; /* Adjust the padding to create space for the anchor icon */
-  visibility: hidden;
-}
-
-/* Show anchor links when hovering over headers */
-mat-card-title:hover .anchor {
-  visibility: visible;
-}
-
-/* Styles for the anchor icon */
-.anchor::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  width: 20px; /* Width of the anchor icon */
-  height: 20px; /* Height of the anchor icon */
-  background-image: url("assets/anchor-link.svg"); /* Replace with the path to your chain link icon */
-  background-size: contain; /* Ensure the background image fits within the specified width and height */
-  background-repeat: no-repeat; /* Prevent the background image from repeating */
-}
-
-/* Optional: Adjust the styles of the anchor text */
-.anchor {
-  color: #333; /* Change the color of the anchor text */
-  text-decoration: none; /* Remove underline from the anchor text */
-}
-
-.anchor:hover {
-  text-decoration: underline;
-}
-
 blockquote {
   border-left: 5px solid #ccc;
   margin: 0;
