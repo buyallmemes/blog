@@ -46,7 +46,6 @@ const LINKEDIN_BUTTON = {
   color: '#006fa6',
   params: {
     url: 'url',
-    title: 'title',
     description: 'text'
   },
   share: {
