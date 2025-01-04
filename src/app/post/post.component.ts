@@ -7,20 +7,19 @@ import {ShareButtonsModule} from "ngx-sharebuttons/buttons";
 import {ShareService} from "ngx-sharebuttons";
 
 @Component({
-  selector: 'app-post',
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardContent,
-    NgIf,
-    SafeHtmlPipe,
-    MatCardSubtitle,
-    MatCardTitle,
-    MatCardHeader,
-    ShareButtonsModule
-  ],
-  templateUrl: './post.component.html',
-  styleUrl: './post.component.scss'
+    selector: 'app-post',
+    imports: [
+        MatCard,
+        MatCardContent,
+        NgIf,
+        SafeHtmlPipe,
+        MatCardSubtitle,
+        MatCardTitle,
+        MatCardHeader,
+        ShareButtonsModule
+    ],
+    templateUrl: './post.component.html',
+    styleUrl: './post.component.scss'
 })
 export class PostComponent implements OnInit {
   @Input() post!: Post;
