@@ -7,10 +7,11 @@ import {MatIconButton} from "@angular/material/button";
 import {NavigationComponent} from "./navigation/navigation.component";
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet, MatToolbar, BlogComponent, MatIcon, MatIconButton, NavigationComponent],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, MatToolbar, BlogComponent, MatIcon, MatIconButton, NavigationComponent],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title: String = 'BuyAllMemes';
