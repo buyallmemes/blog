@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 
 import 'prismjs';
 import 'prismjs/plugins/toolbar/prism-toolbar';
@@ -19,8 +19,12 @@ declare var Prism: any;
   providedIn: 'root'
 })
 export class HighlightService {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   highlightAll() {
-    Prism.highlightAll();
+    // Only run highlighting in browser environment to avoid SSR issues
+    if (isPlatformBrowser(this.platformId)) {
+      Prism.highlightAll();
+    }
   }
 }

@@ -3,8 +3,7 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} f
 import {Post} from "./post";
 import {NgIf} from "@angular/common";
 import {SafeHtmlPipe} from "./safehtmlpipe";
-import {ShareButtonsModule} from "ngx-sharebuttons/buttons";
-import {ShareService} from "ngx-sharebuttons";
+import {ShareButtons} from "ngx-sharebuttons/buttons";
 
 @Component({
   selector: 'app-post',
@@ -17,7 +16,7 @@ import {ShareService} from "ngx-sharebuttons";
     MatCardSubtitle,
     MatCardTitle,
     MatCardHeader,
-    ShareButtonsModule
+    ShareButtons
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
@@ -27,29 +26,11 @@ export class PostComponent implements OnInit {
 
   postShareTitle: string = '';
 
-  constructor(private share: ShareService) {
+  constructor() {
   }
 
 
   ngOnInit(): void {
     this.postShareTitle = 'BuyAllMemes - Blog - ' + this.post.title;
-
-    this.share.addButton('linkedin', LINKEDIN_BUTTON);
   }
 }
-
-const LINKEDIN_BUTTON = {
-  type: 'linkedin',
-  text: 'LinkedIn',
-  ariaLabel: 'Share on LinkedIn',
-  icon: ['fab', 'linkedin-in'],
-  color: '#006fa6',
-  params: {
-    url: 'url',
-    description: 'text'
-  },
-  share: {
-    desktop: 'https://www.linkedin.com/shareArticle?mini=true&',
-  }
-};
-

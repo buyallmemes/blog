@@ -6,8 +6,8 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {provideHttpClient, withFetch} from "@angular/common/http";
 import {HighlightService} from "./blog/highlight.service";
 import {provideClientHydration} from '@angular/platform-browser';
-import {ShareIconsModule} from "ngx-sharebuttons/icons";
-import {ShareButtonsModule} from "ngx-sharebuttons/buttons";
+import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {addIcons} from './icons';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,9 +15,17 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     importProvidersFrom(
       HighlightService,
-      ShareButtonsModule,
-      ShareIconsModule
+      FontAwesomeModule
     ),
-    provideHttpClient(withFetch()), provideClientHydration()
+    provideHttpClient(withFetch()),
+    provideClientHydration(),
+    {
+      provide: FaIconLibrary,
+      useFactory: () => {
+        const library = new FaIconLibrary();
+        addIcons(library);
+        return library;
+      }
+    }
   ]
 };

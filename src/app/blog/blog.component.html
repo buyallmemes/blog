@@ -1,7 +1,31 @@
 <h1 class="mat-display-1">BuyAllMemes Blog</h1>
 
-<p>Here are some posts:</p>
+<div class="blog-container">
+  <div class="post-content">
+    <div *ngIf="selectedPost">
+      <app-post [post]="selectedPost"></app-post>
+    </div>
+    <div *ngIf="!selectedPost && blog && blog.posts && blog.posts.length > 0">
+      <app-post [post]="blog.posts[0]"></app-post>
+    </div>
+    <div *ngIf="!blog || !blog.posts || blog.posts.length === 0" class="no-content-message">
+      <h2>Nothing to see here</h2>
+      <p>No articles are currently available. Please check back later.</p>
+    </div>
+  </div>
 
-<div *ngFor="let post of blog?.posts">
-  <app-post [post]="post"></app-post>
+  <div class="post-list">
+    <h2>All Posts</h2>
+    <div class="post-list-items">
+      <ng-container *ngIf="blog && blog.posts && blog.posts.length > 0">
+        <div *ngFor="let post of blog.posts" class="post-list-item" (click)="selectPost(post)" [class.active]="isSelectedPost(post)">
+          <h3>{{ post.title }}</h3>
+          <p class="post-date">{{ post.date }}</p>
+        </div>
+      </ng-container>
+      <div *ngIf="!blog || !blog.posts || blog.posts.length === 0" class="no-posts-message">
+        <p>No posts available</p>
+      </div>
+    </div>
+  </div>
 </div>
