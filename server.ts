@@ -1,52 +1,70 @@
-import {APP_BASE_HREF} from '@angular/common';
-import express from 'express';
-import {fileURLToPath} from 'node:url';
-import {dirname, join, resolve} from 'node:path';
+/**
+ * Server-side rendering configuration for Angular application.
+ * This file sets up an Express server to handle server-side rendering
+ * and static file serving for the Angular application.
+ */
+import { APP_BASE_HREF } from '@angular/common';
+import express, { Request, Response, NextFunction } from 'express';
+import { fileURLToPath } from 'node:url';
+import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
 
-// The Express app is exported so that it can be used by serverless Functions.
-export function app(): express.Express {
-  const server = express();
+/**
+ * Creates and configures an Express application for serving the Angular app.
+ *
+ * @returns {express.Express} Configured Express application
+ */
+export function createExpressApp(): express.Express {
+  const expressApp = express();
+
+  // Determine file paths for server-side rendering
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
-  const indexHtml = join(serverDistFolder, 'index.server.html');
+  const indexHtmlPath = join(serverDistFolder, 'index.server.html');
 
-  server.set('view engine', 'html');
-  server.set('views', browserDistFolder);
+  // Configure Express view engine
+  expressApp.set('view engine', 'html');
+  expressApp.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get('*.*', express.static(browserDistFolder, {
-    maxAge: '1y'
+  // Serve static files with caching
+  expressApp.get('*.*', express.static(browserDistFolder, {
+    maxAge: '1y' // Cache static assets for 1 year
   }));
 
-  // All regular routes use the Angular engine
-  server.get('*', (req, res, next) => {
-    const { protocol, originalUrl, baseUrl, headers } = req;
+  // Handle all other routes with Angular's universal rendering
+  expressApp.get('*', (req: Request, res: Response, next: NextFunction) => {
+    const { baseUrl } = req;
 
-    // In Angular 19, bootstrap doesn't take parameters
+    // Bootstrap the Angular application
     bootstrap()
-      .then(app => {
-        res.render(indexHtml, {
+      .then(angularApp => {
+        // Render the application using the server-side template
+        res.render(indexHtmlPath, {
           req,
           providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }]
         });
       })
-      .catch((err) => next(err));
+      .catch((error: Error) => {
+        console.error('Server-side rendering failed:', error);
+        next(error);
+      });
   });
 
-  return server;
+  return expressApp;
 }
 
-function run(): void {
+/**
+ * Starts the Express server on the specified port.
+ * Uses environment variable SSR_PORT if available, otherwise defaults to 4000.
+ */
+function startServer(): void {
   const port = process.env['SSR_PORT'] || 4000;
+  const expressApp = createExpressApp();
 
-  // Start up the Node server
-  const server = app();
-  server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
+  expressApp.listen(port, () => {
+    console.log(`Server-side rendering server listening on http://localhost:${port}`);
   });
 }
 
-run();
+// Initialize the server when this file is executed
+startServer();
