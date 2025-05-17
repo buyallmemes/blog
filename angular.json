@@ -101,9 +101,10 @@
 						],
 						"styles": [
 							"@angular/material/prebuilt-themes/indigo-pink.css",
-							"src/styles.scss"
+							"src/test-styles.scss"
 						],
-						"scripts": []
+						"scripts": [],
+						"karmaConfig": "karma.conf.js"
 					}
 				}
 			}

@@ -1,0 +1,43 @@
+/* Test-specific styles file that excludes problematic imports */
+
+/* Import only what's needed for tests */
+@import "prismjs/plugins/toolbar/prism-toolbar.css";
+@import "prismjs/themes/prism.css";
+
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  color: #424242;
+  background-color: #fafafa;
+}
+
+/* Minimal styles needed for tests */
+.mat-mdc-card-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.post-title-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.mat-mdc-card {
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.mat-mdc-card-header {
+  padding-bottom: 0.5rem;
+}
+
+.mat-mdc-card-content {
+  padding: 1rem;
+}
