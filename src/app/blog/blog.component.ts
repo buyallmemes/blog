@@ -1,7 +1,7 @@
 import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf, ViewportScroller} from "@angular/common";
 import {PostComponent} from "../post/post.component";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HighlightService} from "./highlight.service";
 import {Blog} from "./blog";
 import {Title} from "@angular/platform-browser";
@@ -25,6 +25,7 @@ export class BlogComponent implements OnInit, AfterViewChecked {
 
   constructor(private scroller: ViewportScroller,
               private route: ActivatedRoute,
+              private router: Router,
               private highlightService: HighlightService,
               private titleService: Title
   ) {
@@ -32,7 +33,7 @@ export class BlogComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     if (this.fragment) {
-      this.scroller.scrollToAnchor(this.fragment);
+      // No longer scroll to anchor, just update the title
       this.titleService.setTitle(`BuyAllMemes Blog - ${this.blog?.posts.find(post => post.anchor === this.fragment)?.title}`);
     } else {
       this.titleService.setTitle(`BuyAllMemes Blog`);
@@ -71,8 +72,15 @@ export class BlogComponent implements OnInit, AfterViewChecked {
   selectPost(post: Post): void {
     this.selectedPost = post;
     this.fragment = post.anchor;
-    this.scroller.scrollToAnchor(post.anchor);
+    this.scroller.scrollToPosition([0, 0]);
     this.titleService.setTitle(`BuyAllMemes Blog - ${post.title}`);
+
+    // Update URL with fragment using Router
+    this.router.navigate([], {
+      relativeTo: this.route,
+      fragment: post.anchor,
+      replaceUrl: false // Set to true if you don't want to add to browser history
+    });
   }
 
   isSelectedPost(post: Post): boolean {

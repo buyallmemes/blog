@@ -1,11 +1,9 @@
-.container {
-  max-width: 800px;
-  margin: 4em auto;
-  padding: 0 20px;
-}
+/* Use Tailwind's @apply directive for consistent styling */
+.app-content {
+  @apply py-6;
 
-.container > * {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /* Ensure router-outlet children are properly styled */
+  & > * {
+    @apply flex flex-col;
+  }
 }

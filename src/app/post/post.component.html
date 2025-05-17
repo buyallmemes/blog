@@ -1,25 +1,27 @@
-<div *ngIf="post">
+<div *ngIf="post" class="post-container">
+  <!-- Hidden anchor element to prevent title from being cut off -->
+  <div id="{{post.anchor}}" style="position: relative; top: -80px; visibility: hidden;"></div>
   <mat-card>
-    <mat-card-header class="post-header">
-      <mat-card-title class="post-title" id="{{post.anchor}}">
+    <mat-card-header style="display: block; padding: 1.5rem 1.5rem 1rem;">
+      <mat-card-title style="display: flex; flex-direction: column; margin-bottom: 0.5rem;">
         <span class="post-title-text">{{ post.title }}</span>
-        <span class="title-spacer"></span>
-        <share-buttons class="share-buttons"
+        <div style="margin-top: 1rem;">
+          <share-buttons
                        [theme]="'material-light'"
                        [include]="['copy','linkedin']"
                        [show]="2"
                        [description]="postShareTitle"
                        [url]="'https://buyallmemes.com/#'+post.anchor"
                        [title]="postShareTitle"
-        ></share-buttons>
+          ></share-buttons>
+        </div>
       </mat-card-title>
       <mat-card-subtitle>
-        <span>{{ post.date }}</span>
+        <span style="font-size: 0.875rem; color: #616161;">{{ post.date }}</span>
       </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
-      <div [innerHTML]="post.content | SafeHtml"></div>
+    <mat-card-content style="padding: 0 1.5rem 1.5rem;">
+      <div style="max-width: 100%;" [innerHTML]="post.content | SafeHtml"></div>
     </mat-card-content>
   </mat-card>
-  <div class="flex-container"></div>
 </div>

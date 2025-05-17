@@ -24,5 +24,6 @@ export class NavigationComponent {
 
   goHome() {
     this.router.navigate(['']);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

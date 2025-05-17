@@ -1,19 +1,51 @@
-.flex-container {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  padding: 16px;
+/* All styles have been replaced with Tailwind CSS utility classes in the HTML */
+
+/* Add any custom styles that can't be easily achieved with Tailwind below */
+.post-container {
+  @apply mb-8;
 }
 
-.title-spacer {
-  flex: 1 1 auto;
-}
+/* Styling for the content rendered by SafeHtml pipe */
+:host ::ng-deep .prose {
+  @apply text-neutral-800;
 
-.post-header {
-  display: block;
-  padding: 16px;
-}
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-neutral-900 mt-6 mb-4;
+  }
 
-.post-title {
-  display: flex;
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  p {
+    @apply my-4;
+  }
+
+  a {
+    @apply text-primary-600 hover:text-primary-800 transition-colors;
+  }
+
+  ul, ol {
+    @apply my-4 pl-6;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+
+  pre {
+    @apply bg-neutral-100 p-4 rounded-md overflow-x-auto my-4;
+  }
 }
