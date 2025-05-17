@@ -101,10 +101,3 @@ ng test --include=src/app/blog/blog.component.spec.ts
 3. Write descriptive commit messages
 4. Create pull requests with clear descriptions
 5. Request code reviews before merging
-
-## Additional Resources
-
-- [Project Structure Documentation](../docs/PROJECT_STRUCTURE.md)
-- [Contributing Guidelines](../CONTRIBUTING.md)
-- [Angular Documentation](https://angular.io/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
