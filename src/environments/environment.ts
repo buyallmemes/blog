@@ -1,3 +1,3 @@
 export const environment = {
-  blogApiUrl: 'https://api.buyallmemes.com/posts'
+  blogApiUrl: 'https://api.buyallmemes.com/posts',
 };

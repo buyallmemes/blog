@@ -24,11 +24,11 @@ import { faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 export function addIcons(library: FaIconLibrary): void {
   // UI element icons (from solid icon set)
   library.addIcons(
-    faLink  // Used for anchor links
+    faLink // Used for anchor links
   );
 
   // Social media and external service icons (from brands icon set)
   library.addIcons(
-    faLinkedinIn  // LinkedIn sharing
+    faLinkedinIn // LinkedIn sharing
   );
 }

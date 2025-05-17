@@ -1,5 +1,3 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
 # Compiled output
 /dist
 /tmp
@@ -19,11 +17,8 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
-blog.iml
-
 
 # Visual Studio Code
-/.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -44,8 +39,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# ESLint
-.eslintcache
+# Package files
+package-lock.json
 
-# Prettier
-.prettier-cache
+# Config files
+karma.conf.js
+tailwind.config.js
+postcss.config.js

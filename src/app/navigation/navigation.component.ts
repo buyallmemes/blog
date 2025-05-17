@@ -10,12 +10,9 @@ import { MatToolbar } from '@angular/material/toolbar';
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [
-    MatIconButton,
-    MatToolbar
-  ],
+  imports: [MatIconButton, MatToolbar],
   templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.scss'
+  styleUrl: './navigation.component.scss',
 })
 export class NavigationComponent {
   /**

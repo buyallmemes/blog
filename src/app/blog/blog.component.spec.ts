@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ViewportScroller } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -7,7 +7,6 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 // FontAwesome mocks
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
@@ -17,7 +16,8 @@ import { Blog } from './blog';
 import { Post } from '../post/post';
 
 // Add FontAwesome icons to the library for testing
-library.add(fas);
+// Cast fas to any to avoid type errors
+library.add(fas as any);
 
 describe('BlogComponent', () => {
   let component: BlogComponent;
@@ -26,7 +26,7 @@ describe('BlogComponent', () => {
   let mockScroller: jasmine.SpyObj<ViewportScroller>;
   let mockHighlightService: jasmine.SpyObj<HighlightService>;
   let mockTitleService: jasmine.SpyObj<Title>;
-  let mockActivatedRoute: any;
+  let mockActivatedRoute: Partial<ActivatedRoute>;
   let mockBlog: Blog;
   let mockPosts: Post[];
 
@@ -37,19 +37,19 @@ describe('BlogComponent', () => {
         anchor: 'first-post',
         title: 'First Post',
         content: '<p>First post content</p>',
-        date: '2023-05-15'
+        date: '2023-05-15',
       },
       {
         anchor: 'second-post',
         title: 'Second Post',
         content: '<p>Second post content</p>',
-        date: '2023-06-20'
-      }
+        date: '2023-06-20',
+      },
     ];
 
     // Create mock blog
     mockBlog = {
-      posts: mockPosts
+      posts: mockPosts,
     };
 
     // Create spies for services
@@ -61,22 +61,19 @@ describe('BlogComponent', () => {
     // Create mock ActivatedRoute with fragment and data observables
     mockActivatedRoute = {
       fragment: of('first-post'),
-      data: of({ blog: mockBlog })
+      data: of({ blog: mockBlog }),
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        BlogComponent,
-        HttpClientTestingModule
-      ],
+      imports: [BlogComponent, HttpClientTestingModule],
       providers: [
         { provide: Router, useValue: mockRouter },
         { provide: ViewportScroller, useValue: mockScroller },
         { provide: HighlightService, useValue: mockHighlightService },
         { provide: Title, useValue: mockTitleService },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
-      schemas: [NO_ERRORS_SCHEMA] // Ignore unknown elements
+      schemas: [NO_ERRORS_SCHEMA], // Ignore unknown elements
     }).compileComponents();
 
     fixture = TestBed.createComponent(BlogComponent);
@@ -123,9 +120,9 @@ describe('BlogComponent', () => {
     expect(component.fragment).toBe('second-post');
     expect(mockScroller.scrollToPosition).toHaveBeenCalledWith([0, 0]);
     expect(mockRouter.navigate).toHaveBeenCalledWith([], {
-      relativeTo: mockActivatedRoute,
+      relativeTo: mockActivatedRoute as any,
       fragment: 'second-post',
-      replaceUrl: false
+      replaceUrl: false,
     });
   });
 
@@ -156,7 +153,7 @@ describe('BlogComponent', () => {
     // Create spy to track unsubscribe calls
     const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
-    // @ts-ignore - Accessing private property for testing
+    // @ts-expect-error - Accessing private property for testing
     component.subscriptions = [subscriptionSpy, subscriptionSpy];
 
     component.ngOnDestroy();

@@ -54,7 +54,7 @@ declare const Prism: PrismStatic;
  * and update the documentation above.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HighlightService {
   /**
@@ -62,7 +62,7 @@ export class HighlightService {
    *
    * @param platformId - Injection token to determine the current platform (browser/server)
    */
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: string) {}
 
   /**
    * Applies syntax highlighting to all code blocks on the page.

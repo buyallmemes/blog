@@ -9,7 +9,7 @@ import {
   MatCardContent,
   MatCardHeader,
   MatCardSubtitle,
-  MatCardTitle
+  MatCardTitle,
 } from '@angular/material/card';
 import { ShareButtons } from 'ngx-sharebuttons/buttons';
 
@@ -27,10 +27,10 @@ import { SafeHtmlPipe } from './safehtmlpipe';
     MatCardTitle,
     NgIf,
     SafeHtmlPipe,
-    ShareButtons
+    ShareButtons,
   ],
   templateUrl: './post.component.html',
-  styleUrl: './post.component.scss'
+  styleUrl: './post.component.scss',
 })
 export class PostComponent implements OnInit {
   /**

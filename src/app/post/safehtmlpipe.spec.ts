@@ -13,10 +13,7 @@ describe('SafeHtmlPipe', () => {
 
     // Configure TestBed with the mock
     TestBed.configureTestingModule({
-      providers: [
-        SafeHtmlPipe,
-        { provide: DomSanitizer, useValue: sanitizerSpy }
-      ]
+      providers: [SafeHtmlPipe, { provide: DomSanitizer, useValue: sanitizerSpy }],
     });
 
     // Get instances

@@ -27,7 +27,7 @@ function provideFontAwesomeIcons(): Provider {
       const library = new FaIconLibrary();
       addIcons(library);
       return library;
-    }
+    },
   };
 }
 
@@ -38,10 +38,7 @@ function provideFontAwesomeIcons(): Provider {
 export const appConfig: ApplicationConfig = {
   providers: [
     // Routing configuration
-    provideRouter(
-      routes,
-      withInMemoryScrolling({ anchorScrolling: 'enabled' })
-    ),
+    provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled' })),
 
     // HTTP client configuration
     provideHttpClient(withFetch()),
@@ -53,12 +50,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
 
     // Application services
-    importProvidersFrom(
-      HighlightService,
-      FontAwesomeModule
-    ),
+    importProvidersFrom(HighlightService, FontAwesomeModule),
 
     // Icon library configuration
-    provideFontAwesomeIcons()
-  ]
+    provideFontAwesomeIcons(),
+  ],
 };

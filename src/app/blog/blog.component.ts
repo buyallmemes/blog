@@ -18,20 +18,16 @@ import { HighlightService } from './highlight.service';
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [
-    PostComponent,
-    NgForOf,
-    NgIf
-  ],
+  imports: [PostComponent, NgForOf, NgIf],
   templateUrl: './blog.component.html',
-  styleUrl: './blog.component.scss'
+  styleUrl: './blog.component.scss',
 })
 export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
   /** The blog data containing all posts */
   blog?: Blog;
 
   /** Current URL fragment identifier */
-  fragment: string = "";
+  fragment: string = '';
 
   /** Currently selected blog post */
   selectedPost?: Post;
@@ -102,7 +98,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.route,
       fragment: post.anchor,
-      replaceUrl: false // Set to true if you don't want to add to browser history
+      replaceUrl: false, // Set to true if you don't want to add to browser history
     });
   }
 
@@ -133,7 +129,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    */
   private setupFragmentListener(): void {
     const subscription = this.route.fragment.subscribe(fragment => {
-      this.fragment = fragment || "";
+      this.fragment = fragment || '';
       this.updateSelectedPostFromFragment();
     });
 

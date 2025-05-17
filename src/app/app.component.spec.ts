@@ -6,11 +6,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AppComponent,
-        RouterTestingModule
-      ],
-      schemas: [NO_ERRORS_SCHEMA] // Ignore unknown elements like app-navigation
+      imports: [AppComponent, RouterTestingModule],
+      schemas: [NO_ERRORS_SCHEMA], // Ignore unknown elements like app-navigation
     }).compileComponents();
   });
 

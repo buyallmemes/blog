@@ -16,7 +16,7 @@ import { Blog } from './blog';
 const API_TIMEOUT_MS = 10000;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BlogService {
   /**
@@ -38,15 +38,14 @@ export class BlogService {
    * @returns An Observable that emits the blog data or an empty blog on error
    */
   fetchBlog(): Observable<Blog> {
-    return this.httpClient.get<Blog>(this.blogApiUrl)
-      .pipe(
-        // Add timeout to prevent hanging requests
-        timeout(API_TIMEOUT_MS),
-        // Retry the request up to 3 times before giving up
-        retry(3),
-        // Handle errors gracefully
-        catchError((error: HttpErrorResponse) => this.handleError(error))
-      );
+    return this.httpClient.get<Blog>(this.blogApiUrl).pipe(
+      // Add timeout to prevent hanging requests
+      timeout(API_TIMEOUT_MS),
+      // Retry the request up to 3 times before giving up
+      retry(3),
+      // Handle errors gracefully
+      catchError((error: HttpErrorResponse) => this.handleError(error))
+    );
   }
 
   /**
@@ -64,8 +63,7 @@ export class BlogService {
     } else {
       // Server-side error
       console.error(
-        `Server error fetching blog data: ${error.status}, ` +
-        `message: ${error.message}`
+        `Server error fetching blog data: ${error.status}, ` + `message: ${error.message}`
       );
     }
 
