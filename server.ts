@@ -3,10 +3,10 @@
  * This file sets up an Express server to handle server-side rendering
  * and static file serving for the Angular application.
  */
-import { APP_BASE_HREF } from '@angular/common';
-import express, { Request, Response, NextFunction } from 'express';
-import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import {APP_BASE_HREF} from '@angular/common';
+import express, {NextFunction, Request, Response} from 'express';
+import {fileURLToPath} from 'node:url';
+import {dirname, join, resolve} from 'node:path';
 import bootstrap from './src/main.server';
 
 /**
@@ -37,7 +37,7 @@ export function createExpressApp(): express.Express {
 
     // Bootstrap the Angular application
     bootstrap()
-      .then(angularApp => {
+      .then(() => {
         // Render the application using the server-side template
         res.render(indexHtmlPath, {
           req,
