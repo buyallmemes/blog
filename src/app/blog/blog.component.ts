@@ -50,7 +50,8 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     private router: Router,
     private highlightService: HighlightService,
     private titleService: Title
-  ) {}
+  ) {
+  }
 
   /**
    * Lifecycle hook that is called after Angular has fully initialized the component's view.
@@ -88,9 +89,6 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.selectedPost = post;
     this.fragment = post.anchor;
 
-    // Scroll to top of page
-    this.scroller.scrollToPosition([0, 0]);
-
     // Update page title
     this.updatePageTitle();
 
@@ -116,7 +114,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    * Loads blog posts from the route data and selects the initial post.
    */
   private loadPosts(): void {
-    const subscription = this.route.data.subscribe(({ blog }) => {
+    const subscription = this.route.data.subscribe(({blog}) => {
       this.blog = blog;
       this.updateSelectedPostFromFragment();
     });
