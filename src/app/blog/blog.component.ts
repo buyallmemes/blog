@@ -3,17 +3,17 @@
  * This component manages the display of blog posts, handles URL fragment navigation,
  * and updates the document title based on the selected post.
  */
-import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgForOf, NgIf, ViewportScroller } from '@angular/common';
-import { Subscription } from 'rxjs';
+import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NgForOf, NgIf, ViewportScroller} from '@angular/common';
+import {Subscription} from 'rxjs';
 
 // Application imports
-import { PostComponent } from '../post/post.component';
-import { Post } from '../post/post';
-import { Blog } from './blog';
-import { HighlightService } from './highlight.service';
+import {PostComponent} from '../post/post.component';
+import {Post} from '../post/post';
+import {Blog} from './blog';
+import {HighlightService} from './highlight.service';
 
 @Component({
   selector: 'app-blog',
@@ -141,7 +141,8 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    * If no matching post is found, defaults to the first post.
    */
   private updateSelectedPostFromFragment(): void {
-    if (!this.blog) {
+    // Return early if blog or blog.posts is not defined
+    if (!this.blog || !this.blog.posts) {
       return;
     }
 
