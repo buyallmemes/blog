@@ -3,17 +3,17 @@
  * This component manages the display of blog posts, handles URL fragment navigation,
  * and updates the document title based on the selected post.
  */
-import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
-import {Title} from '@angular/platform-browser';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NgForOf, NgIf, ViewportScroller} from '@angular/common';
-import {Subscription} from 'rxjs';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgForOf, NgIf, ViewportScroller } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 // Application imports
-import {PostComponent} from '../post/post.component';
-import {Post} from '../post/post';
-import {Blog} from './blog';
-import {HighlightService} from './highlight.service';
+import { PostComponent } from '../post/post.component';
+import { Post } from '../post/post';
+import { Blog } from './blog';
+import { HighlightService } from './highlight.service';
 
 @Component({
   selector: 'app-blog',
@@ -50,8 +50,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     private router: Router,
     private highlightService: HighlightService,
     private titleService: Title
-  ) {
-  }
+  ) {}
 
   /**
    * Lifecycle hook that is called after Angular has fully initialized the component's view.
@@ -114,7 +113,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    * Loads blog posts from the route data and selects the initial post.
    */
   private loadPosts(): void {
-    const subscription = this.route.data.subscribe(({blog}) => {
+    const subscription = this.route.data.subscribe(({ blog }) => {
       this.blog = blog;
       this.updateSelectedPostFromFragment();
     });
