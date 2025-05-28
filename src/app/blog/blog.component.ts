@@ -1,12 +1,12 @@
 /**
  * Blog component responsible for displaying blog posts and handling post selection.
- * This component manages the display of blog posts, handles URL fragment navigation,
+ * This component manages the display of blog posts, handles URL route navigation,
  * and updates the document title based on the selected post.
  */
-import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformBrowser, NgForOf, NgIf, ViewportScroller } from '@angular/common';
+import { NgForOf, NgIf, ViewportScroller } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 // Application imports
@@ -14,7 +14,6 @@ import { PostComponent } from '../post/post.component';
 import { Post } from '../post/post';
 import { Blog } from './blog';
 import { HighlightService } from './highlight.service';
-import { SeoService } from '../services/seo.service';
 
 @Component({
   selector: 'app-blog',
@@ -27,8 +26,8 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
   /** The blog data containing all posts */
   blog?: Blog;
 
-  /** Current URL fragment identifier */
-  fragment: string = '';
+  /** Current post identifier */
+  postId: string = '';
 
   /** Currently selected blog post */
   selectedPost?: Post;
@@ -44,17 +43,13 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    * @param router - Angular router service for navigation
    * @param highlightService - Service for syntax highlighting in code blocks
    * @param titleService - Service for setting document title
-   * @param seoService - Service for managing SEO metadata
-   * @param platformId - The platform ID to check if the code is running in the browser
    */
   constructor(
     private scroller: ViewportScroller,
     private route: ActivatedRoute,
     private router: Router,
     private highlightService: HighlightService,
-    private titleService: Title,
-    private seoService: SeoService,
-    @Inject(PLATFORM_ID) private platformId: object
+    private titleService: Title
   ) {}
 
   /**
@@ -68,11 +63,11 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   /**
    * Lifecycle hook that is called when the component is initialized.
-   * Loads blog posts and sets up fragment subscription.
+   * Loads blog posts and sets up route parameter subscription.
    */
   ngOnInit(): void {
     this.loadPosts();
-    this.setupFragmentListener();
+    this.setupRouteParamListener();
   }
 
   /**
@@ -91,25 +86,13 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    */
   selectPost(post: Post): void {
     this.selectedPost = post;
-    this.fragment = post.anchor;
+    this.postId = post.anchor;
 
     // Update page title
     this.updatePageTitle();
 
-    // Use state parameter to handle SSG navigation issues
-    this.router
-      .navigate(['/post', post.anchor], {
-        replaceUrl: false,
-        state: { skipLocationChange: !isPlatformBrowser(this.platformId) },
-      })
-      .then(() => {
-        if (isPlatformBrowser(this.platformId)) {
-          // Ensure scroll position is updated correctly when in browser
-          setTimeout(() => {
-            this.scroller.scrollToPosition([0, 0]);
-          });
-        }
-      });
+    // Update URL using Router to navigate to the post page
+    this.router.navigate(['/blog', post.anchor]);
   }
 
   /**
@@ -128,71 +111,52 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
   private loadPosts(): void {
     const subscription = this.route.data.subscribe(({ blog }) => {
       this.blog = blog;
-
-      // Check if we have a post slug in the route params
-      this.route.paramMap.subscribe(params => {
-        const slug = params.get('slug');
-        if (slug) {
-          this.fragment = slug;
-        }
-        this.updateSelectedPostFromFragment();
-      });
+      this.updateSelectedPostFromRouteParams();
     });
 
     this.subscriptions.push(subscription);
   }
 
   /**
-   * Sets up a listener for URL fragment changes.
-   * This maintains backward compatibility with fragment-based navigation.
+   * Sets up a listener for URL route parameter changes.
    */
-  private setupFragmentListener(): void {
-    const subscription = this.route.fragment.subscribe(fragment => {
-      if (fragment) {
-        this.fragment = fragment;
-        this.updateSelectedPostFromFragment();
-      }
+  private setupRouteParamListener(): void {
+    const subscription = this.route.paramMap.subscribe(params => {
+      const postId = params.get('postId');
+      this.postId = postId || '';
+      this.updateSelectedPostFromRouteParams();
     });
 
     this.subscriptions.push(subscription);
   }
 
   /**
-   * Updates the selected post based on the current fragment.
+   * Updates the selected post based on the current route parameters.
    * If no matching post is found, defaults to the first post.
    */
-  private updateSelectedPostFromFragment(): void {
+  private updateSelectedPostFromRouteParams(): void {
     // Return early if blog or blog.posts is not defined
-    if (!this.blog || !this.blog.posts || !this.blog.posts.length) {
-      console.warn('Blog posts not available yet');
+    if (!this.blog || !this.blog.posts) {
       return;
     }
 
-    if (this.fragment) {
-      // Try to find post matching the fragment
-      const matchingPost = this.findPostByAnchor(this.fragment);
-      if (matchingPost) {
-        this.selectedPost = matchingPost;
+    if (this.postId && this.blog.posts.length > 0) {
+      // Try to find post matching the route parameter
+      this.selectedPost = this.findPostByAnchor(this.postId) || this.blog.posts[0];
 
-        // In browser context, update SEO and scroll position
-        if (isPlatformBrowser(this.platformId)) {
-          this.updateSeoMetadata();
-          setTimeout(() => {
-            this.scroller.scrollToPosition([0, 0]);
-          }, 100);
-        }
-      } else {
-        console.warn(`No post found with anchor: ${this.fragment}, defaulting to first post`);
-        this.selectedPost = this.blog.posts[0];
-
-        // Redirect to the correct URL if we're in the browser
-        if (isPlatformBrowser(this.platformId)) {
-          this.router.navigate(['/post', this.blog.posts[0].anchor], { replaceUrl: true });
-        }
+      // If we couldn't find the post but are on a specific route, redirect to the first post
+      if (!this.findPostByAnchor(this.postId) && this.postId) {
+        this.router.navigate(['/blog', this.blog.posts[0].anchor]);
       }
     } else if (this.blog.posts.length > 0) {
-      // Default to first post if no fragment
+      // Default to first post if no route parameter or matching post
       this.selectedPost = this.blog.posts[0];
+
+      // If we're on the home route with no postId, we could optionally redirect to the first post
+      if (this.route.snapshot.url.length === 0) {
+        // We're on the root path, could redirect if desired
+        // this.router.navigate(['/blog', this.blog.posts[0].anchor]);
+      }
     }
   }
 
@@ -208,71 +172,14 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   /**
    * Updates the page title based on the selected post.
-   * Also updates SEO metadata for better search engine visibility.
    */
   private updatePageTitle(): void {
     const baseTitle = 'BuyAllMemes Blog';
 
     if (this.selectedPost) {
-      const postTitle = this.selectedPost.title;
-      this.titleService.setTitle(postTitle ? `${baseTitle} - ${postTitle}` : baseTitle);
-
-      // Update SEO metadata
-      this.updateSeoMetadata();
+      this.titleService.setTitle(`${baseTitle} - ${this.selectedPost.title}`);
     } else {
       this.titleService.setTitle(baseTitle);
-
-      // Set default blog metadata
-      this.seoService.updateMetaTags({
-        title: baseTitle,
-        description: 'Technical blog about software engineering and development patterns',
-        type: 'website',
-      });
     }
-  }
-
-  /**
-   * Updates SEO metadata based on the selected post
-   */
-  private updateSeoMetadata(): void {
-    if (!this.selectedPost) return;
-
-    // Extract description from content (first 150 characters without HTML)
-    const tempElement = isPlatformBrowser(this.platformId)
-      ? document.createElement('div')
-      : {
-          innerHTML: '',
-          textContent: '',
-        };
-    tempElement.innerHTML = this.selectedPost.content;
-    const textContent = tempElement.textContent || '';
-    const description = textContent.substring(0, 150).trim() + '...';
-
-    // Look for an image in the post content, if any
-    let image: string | undefined;
-    const imgMatch = this.selectedPost.content.match(/<img[^>]+src="([^">]+)"/);
-    if (imgMatch && imgMatch[1]) {
-      image = imgMatch[1];
-    }
-
-    // Parse date string into Date object with validation
-    let publishDate: Date | undefined;
-    if (this.selectedPost.date) {
-      const timestamp = Date.parse(this.selectedPost.date);
-      if (!isNaN(timestamp)) {
-        publishDate = new Date(timestamp);
-      }
-    }
-
-    this.seoService.updateMetaTags({
-      title: this.selectedPost.title,
-      description: description,
-      image: image,
-      type: 'article',
-      keywords: `software engineering, development, ${this.selectedPost.title.toLowerCase()}`,
-      publishedAt: publishDate,
-      author: 'BuyAllMemes',
-      url: `https://buyallmemes.com/post/${this.selectedPost.anchor}`,
-    });
   }
 }

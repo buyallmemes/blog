@@ -4,6 +4,6 @@ import { blogResolver } from './blog/blog.resolver';
 
 export const routes: Routes = [
   { path: '', component: BlogComponent, resolve: { blog: blogResolver } },
-  { path: 'post/:slug', component: BlogComponent, resolve: { blog: blogResolver } },
+  { path: 'blog/:postId', component: BlogComponent, resolve: { blog: blogResolver } },
   { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
