@@ -1,7 +1,7 @@
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {Meta, Title} from '@angular/platform-browser';
-import {Router} from '@angular/router';
-import {isPlatformBrowser} from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Meta, Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface MetaTagConfig {
   title: string;
@@ -30,7 +30,7 @@ export class SeoService {
     private meta: Meta,
     private title: Title,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   /**
@@ -87,14 +87,14 @@ export class SeoService {
     });
 
     // Article specific meta tags
-    if (config.publishedAt) {
+    if (config.publishedAt && !isNaN(config.publishedAt.getTime())) {
       this.meta.updateTag({
         property: 'article:published_time',
         content: config.publishedAt.toISOString(),
       });
     }
 
-    if (config.modifiedAt) {
+    if (config.modifiedAt && !isNaN(config.modifiedAt.getTime())) {
       this.meta.updateTag({
         property: 'article:modified_time',
         content: config.modifiedAt.toISOString(),

@@ -3,18 +3,18 @@
  * This component manages the display of blog posts, handles URL fragment navigation,
  * and updates the document title based on the selected post.
  */
-import {AfterViewChecked, Component, Inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
-import {Title} from '@angular/platform-browser';
-import {ActivatedRoute, Router} from '@angular/router';
-import {isPlatformBrowser, NgForOf, NgIf, ViewportScroller} from '@angular/common';
-import {Subscription} from 'rxjs';
+import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { isPlatformBrowser, NgForOf, NgIf, ViewportScroller } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 // Application imports
-import {PostComponent} from '../post/post.component';
-import {Post} from '../post/post';
-import {Blog} from './blog';
-import {HighlightService} from './highlight.service';
-import {SeoService} from '../services/seo.service';
+import { PostComponent } from '../post/post.component';
+import { Post } from '../post/post';
+import { Blog } from './blog';
+import { HighlightService } from './highlight.service';
+import { SeoService } from '../services/seo.service';
 
 @Component({
   selector: 'app-blog',
@@ -54,7 +54,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     private highlightService: HighlightService,
     private titleService: Title,
     private seoService: SeoService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   /**
@@ -96,10 +96,20 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     // Update page title
     this.updatePageTitle();
 
-    // Update URL using path-based navigation
-    this.router.navigate(['/post', post.anchor], {
-      replaceUrl: false, // Set to true if you don't want to add to browser history
-    });
+    // Use state parameter to handle SSG navigation issues
+    this.router
+      .navigate(['/post', post.anchor], {
+        replaceUrl: false,
+        state: { skipLocationChange: !isPlatformBrowser(this.platformId) },
+      })
+      .then(() => {
+        if (isPlatformBrowser(this.platformId)) {
+          // Ensure scroll position is updated correctly when in browser
+          setTimeout(() => {
+            this.scroller.scrollToPosition([0, 0]);
+          });
+        }
+      });
   }
 
   /**
@@ -153,15 +163,35 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    */
   private updateSelectedPostFromFragment(): void {
     // Return early if blog or blog.posts is not defined
-    if (!this.blog || !this.blog.posts) {
+    if (!this.blog || !this.blog.posts || !this.blog.posts.length) {
+      console.warn('Blog posts not available yet');
       return;
     }
 
-    if (this.fragment && this.blog.posts.length > 0) {
+    if (this.fragment) {
       // Try to find post matching the fragment
-      this.selectedPost = this.findPostByAnchor(this.fragment) || this.blog.posts[0];
+      const matchingPost = this.findPostByAnchor(this.fragment);
+      if (matchingPost) {
+        this.selectedPost = matchingPost;
+
+        // In browser context, update SEO and scroll position
+        if (isPlatformBrowser(this.platformId)) {
+          this.updateSeoMetadata();
+          setTimeout(() => {
+            this.scroller.scrollToPosition([0, 0]);
+          }, 100);
+        }
+      } else {
+        console.warn(`No post found with anchor: ${this.fragment}, defaulting to first post`);
+        this.selectedPost = this.blog.posts[0];
+
+        // Redirect to the correct URL if we're in the browser
+        if (isPlatformBrowser(this.platformId)) {
+          this.router.navigate(['/post', this.blog.posts[0].anchor], { replaceUrl: true });
+        }
+      }
     } else if (this.blog.posts.length > 0) {
-      // Default to first post if no fragment or matching post
+      // Default to first post if no fragment
       this.selectedPost = this.blog.posts[0];
     }
   }
@@ -208,7 +238,12 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (!this.selectedPost) return;
 
     // Extract description from content (first 150 characters without HTML)
-    const tempElement = isPlatformBrowser(this.platformId) ? document.createElement('div') : { innerHTML: '', textContent: '' };
+    const tempElement = isPlatformBrowser(this.platformId)
+      ? document.createElement('div')
+      : {
+          innerHTML: '',
+          textContent: '',
+        };
     tempElement.innerHTML = this.selectedPost.content;
     const textContent = tempElement.textContent || '';
     const description = textContent.substring(0, 150).trim() + '...';
@@ -220,8 +255,14 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
       image = imgMatch[1];
     }
 
-    // Parse date string into Date object
-    const publishDate = new Date(this.selectedPost.date);
+    // Parse date string into Date object with validation
+    let publishDate: Date | undefined;
+    if (this.selectedPost.date) {
+      const timestamp = Date.parse(this.selectedPost.date);
+      if (!isNaN(timestamp)) {
+        publishDate = new Date(timestamp);
+      }
+    }
 
     this.seoService.updateMetaTags({
       title: this.selectedPost.title,
@@ -230,7 +271,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
       type: 'article',
       keywords: `software engineering, development, ${this.selectedPost.title.toLowerCase()}`,
       publishedAt: publishDate,
-      author: 'BuyAllMemes', // You can customize this
+      author: 'BuyAllMemes',
       url: `https://buyallmemes.com/post/${this.selectedPost.anchor}`,
     });
   }
