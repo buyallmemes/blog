@@ -60,9 +60,9 @@ describe('BlogComponent', () => {
       fragment: of('first-post'),
       data: of({ blog: mockBlog }),
       paramMap: of({
-        get: (name: string) => null,
-        has: (name: string) => false,
-        getAll: (name: string) => [],
+        get: () => null,
+        has: () => false,
+        getAll: () => [],
         keys: [] as string[],
       }),
     };

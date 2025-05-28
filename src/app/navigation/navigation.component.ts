@@ -4,13 +4,13 @@
  */
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatIconButton } from '@angular/material/button';
-import { MatToolbar } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [MatIconButton, MatToolbar],
+  imports: [MatButtonModule, MatToolbarModule],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
 })

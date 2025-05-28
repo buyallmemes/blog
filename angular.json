@@ -35,6 +35,19 @@
 						"scripts": [],
 						"server": "src/main.server.ts",
 						"prerender": true,
+							"allowedCommonJsDependencies": [
+							"prismjs",
+							"prismjs/plugins/toolbar/prism-toolbar",
+							"prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard",
+							"prismjs/components/prism-markup",
+							"prismjs/components/prism-css",
+							"prismjs/components/prism-javascript",
+							"prismjs/components/prism-typescript",
+							"prismjs/components/prism-sass",
+							"prismjs/components/prism-scss",
+							"prismjs/components/prism-java",
+							"prismjs/components/prism-bash"
+						],
 						"ssr": {
 							"entry": "server.ts"
 						}
@@ -44,7 +57,7 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
+									"maximumWarning": "600kb",
 									"maximumError": "1mb"
 								},
 								{

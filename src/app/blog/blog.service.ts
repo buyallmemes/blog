@@ -2,10 +2,11 @@
  * Service responsible for fetching blog data from the API.
  * Handles API communication, error handling, and data transformation.
  */
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, retry, timeout } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 import { environment } from '../../environments/environment';
 import { Blog } from './blog';
@@ -28,8 +29,12 @@ export class BlogService {
    * Creates an instance of BlogService.
    *
    * @param httpClient - Angular's HttpClient for making API requests
+   * @param platformId - Angular's platform ID for checking the execution environment
    */
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {}
 
   /**
    * Fetches blog data from the API.
@@ -57,7 +62,7 @@ export class BlogService {
    */
   private handleError(error: HttpErrorResponse): Observable<Blog> {
     // Log different error messages based on error type
-    if (error.error instanceof ErrorEvent) {
+    if (isPlatformBrowser(this.platformId) && error.error instanceof ErrorEvent) {
       // Client-side error
       console.error('Client-side error fetching blog data:', error.error.message);
     } else {
