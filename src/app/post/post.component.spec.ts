@@ -5,17 +5,15 @@ import { SafeHtmlPipe } from './safehtmlpipe';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-// FontAwesome mocks
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-
-// Add FontAwesome icons to the library for testing
-library.add(fas as any);
+// FontAwesome imports
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { registerTestIcons } from '../testing/fontawesome-test-helpers';
 
 describe('PostComponent', () => {
   let component: PostComponent;
   let fixture: ComponentFixture<PostComponent>;
   let mockPost: Post;
+  let iconLibrary: FaIconLibrary;
 
   beforeEach(async () => {
     // Create a mock post
@@ -27,10 +25,14 @@ describe('PostComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [PostComponent, SafeHtmlPipe, HttpClientTestingModule],
+      imports: [PostComponent, SafeHtmlPipe, HttpClientTestingModule, FontAwesomeModule],
       // Use NO_ERRORS_SCHEMA to ignore unknown elements like mat-card
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
+
+    // Get the icon library and register icons
+    iconLibrary = TestBed.inject(FaIconLibrary);
+    registerTestIcons(iconLibrary);
 
     fixture = TestBed.createComponent(PostComponent);
     component = fixture.componentInstance;

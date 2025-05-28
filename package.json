@@ -7,7 +7,7 @@
     "start-local": "concurrently \"ng serve --configuration local\" \"node mock-server.js\"",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration dev",
-    "test": "ng test",
+    "test": "ng test --watch=false --browsers=ChromeHeadless",
     "serve:ssr:blog": "node dist/blog/server/server.mjs",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",

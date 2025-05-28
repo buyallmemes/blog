@@ -80,7 +80,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   /**
-   * Selects a post and updates the URL fragment.
+   * Selects a post and updates the URL.
    *
    * @param post - The post to be selected
    */
@@ -91,10 +91,8 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     // Update page title
     this.updatePageTitle();
 
-    // Update URL with fragment using Router
-    this.router.navigate([], {
-      relativeTo: this.route,
-      fragment: post.anchor,
+    // Update URL using path-based navigation
+    this.router.navigate(['/post', post.anchor], {
       replaceUrl: false, // Set to true if you don't want to add to browser history
     });
   }
@@ -115,7 +113,15 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
   private loadPosts(): void {
     const subscription = this.route.data.subscribe(({ blog }) => {
       this.blog = blog;
-      this.updateSelectedPostFromFragment();
+
+      // Check if we have a post slug in the route params
+      this.route.paramMap.subscribe(params => {
+        const slug = params.get('slug');
+        if (slug) {
+          this.fragment = slug;
+        }
+        this.updateSelectedPostFromFragment();
+      });
     });
 
     this.subscriptions.push(subscription);
@@ -123,11 +129,14 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   /**
    * Sets up a listener for URL fragment changes.
+   * This maintains backward compatibility with fragment-based navigation.
    */
   private setupFragmentListener(): void {
     const subscription = this.route.fragment.subscribe(fragment => {
-      this.fragment = fragment || '';
-      this.updateSelectedPostFromFragment();
+      if (fragment) {
+        this.fragment = fragment;
+        this.updateSelectedPostFromFragment();
+      }
     });
 
     this.subscriptions.push(subscription);

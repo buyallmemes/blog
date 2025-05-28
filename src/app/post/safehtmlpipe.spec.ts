@@ -29,12 +29,11 @@ describe('SafeHtmlPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('should call bypassSecurityTrustHtml with the provided value', () => {
-    const htmlContent = '<p>Test HTML</p>';
+  it('should transform HTML string to SafeHtml', () => {
+    const htmlString = '<div>Test HTML</div>';
+    const result = pipe.transform(htmlString);
 
-    const result = pipe.transform(htmlContent);
-
-    expect(sanitizer.bypassSecurityTrustHtml).toHaveBeenCalledWith(htmlContent);
+    expect(sanitizer.bypassSecurityTrustHtml).toHaveBeenCalledWith(htmlString);
     expect(result).toBe(mockSafeHtml);
   });
 

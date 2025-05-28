@@ -41,6 +41,10 @@ describe('HighlightService', () => {
       service = TestBed.inject(HighlightService);
     });
 
+    it('should be created', () => {
+      expect(service).toBeTruthy();
+    });
+
     it('should not call Prism.highlightAll() in server environment', () => {
       // Create a spy on the global Prism object
       const prismSpy = jasmine.createSpyObj<PrismInterface>('Prism', ['highlightAll']);

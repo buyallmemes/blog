@@ -45,6 +45,11 @@ export class PostComponent implements OnInit {
   private _postShareTitle: string = '';
 
   /**
+   * The canonical URL for this post
+   */
+  postUrl: string = '';
+
+  /**
    * Creates an instance of PostComponent.
    */
   constructor() {}
@@ -59,6 +64,18 @@ export class PostComponent implements OnInit {
     } else {
       this._postShareTitle = 'BuyAllMemes - Blog';
     }
+    if (this.post) {
+      this.updatePostUrl();
+    }
+  }
+
+  /**
+   * Updates the URL used for sharing this post
+   */
+  private updatePostUrl(): void {
+    // Use canonical path-based URL for sharing
+    const baseUrl = 'https://buyallmemes.com';
+    this.postUrl = `${baseUrl}/post/${this.post.anchor}`;
   }
 
   /**
