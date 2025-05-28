@@ -3,17 +3,18 @@
  * This component manages the display of blog posts, handles URL fragment navigation,
  * and updates the document title based on the selected post.
  */
-import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgForOf, NgIf, ViewportScroller } from '@angular/common';
-import { Subscription } from 'rxjs';
+import {AfterViewChecked, Component, Inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {isPlatformBrowser, NgForOf, NgIf, ViewportScroller} from '@angular/common';
+import {Subscription} from 'rxjs';
 
 // Application imports
-import { PostComponent } from '../post/post.component';
-import { Post } from '../post/post';
-import { Blog } from './blog';
-import { HighlightService } from './highlight.service';
+import {PostComponent} from '../post/post.component';
+import {Post} from '../post/post';
+import {Blog} from './blog';
+import {HighlightService} from './highlight.service';
+import {SeoService} from '../services/seo.service';
 
 @Component({
   selector: 'app-blog',
@@ -43,13 +44,17 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    * @param router - Angular router service for navigation
    * @param highlightService - Service for syntax highlighting in code blocks
    * @param titleService - Service for setting document title
+   * @param seoService - Service for managing SEO metadata
+   * @param platformId - The platform ID to check if the code is running in the browser
    */
   constructor(
     private scroller: ViewportScroller,
     private route: ActivatedRoute,
     private router: Router,
     private highlightService: HighlightService,
-    private titleService: Title
+    private titleService: Title,
+    private seoService: SeoService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   /**
@@ -173,15 +178,60 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   /**
    * Updates the page title based on the selected post.
+   * Also updates SEO metadata for better search engine visibility.
    */
   private updatePageTitle(): void {
     const baseTitle = 'BuyAllMemes Blog';
 
-    if (this.fragment) {
-      const postTitle = this.findPostByAnchor(this.fragment)?.title;
+    if (this.selectedPost) {
+      const postTitle = this.selectedPost.title;
       this.titleService.setTitle(postTitle ? `${baseTitle} - ${postTitle}` : baseTitle);
+
+      // Update SEO metadata
+      this.updateSeoMetadata();
     } else {
       this.titleService.setTitle(baseTitle);
+
+      // Set default blog metadata
+      this.seoService.updateMetaTags({
+        title: baseTitle,
+        description: 'Technical blog about software engineering and development patterns',
+        type: 'website',
+      });
     }
+  }
+
+  /**
+   * Updates SEO metadata based on the selected post
+   */
+  private updateSeoMetadata(): void {
+    if (!this.selectedPost) return;
+
+    // Extract description from content (first 150 characters without HTML)
+    const tempElement = isPlatformBrowser(this.platformId) ? document.createElement('div') : { innerHTML: '', textContent: '' };
+    tempElement.innerHTML = this.selectedPost.content;
+    const textContent = tempElement.textContent || '';
+    const description = textContent.substring(0, 150).trim() + '...';
+
+    // Look for an image in the post content, if any
+    let image: string | undefined;
+    const imgMatch = this.selectedPost.content.match(/<img[^>]+src="([^">]+)"/);
+    if (imgMatch && imgMatch[1]) {
+      image = imgMatch[1];
+    }
+
+    // Parse date string into Date object
+    const publishDate = new Date(this.selectedPost.date);
+
+    this.seoService.updateMetaTags({
+      title: this.selectedPost.title,
+      description: description,
+      image: image,
+      type: 'article',
+      keywords: `software engineering, development, ${this.selectedPost.title.toLowerCase()}`,
+      publishedAt: publishDate,
+      author: 'BuyAllMemes', // You can customize this
+      url: `https://buyallmemes.com/post/${this.selectedPost.anchor}`,
+    });
   }
 }
