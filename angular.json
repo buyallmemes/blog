@@ -133,7 +133,7 @@
 						"scripts": [],
 						"karmaConfig": "karma.conf.js"
 					}
-				},
+					},
 				"lint": {
 					"builder": "@angular-eslint/builder:lint",
 					"options": {

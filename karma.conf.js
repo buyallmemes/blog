@@ -13,7 +13,11 @@ module.exports = function (config) {
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      jasmine: {
+        random: true, // Run tests in random order to catch order-dependent issues
+        timeoutInterval: 10000 // Increase timeout for slow tests
+      }
     },
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
@@ -23,11 +27,27 @@ module.exports = function (config) {
       subdir: '.',
       reporters: [
         { type: 'html' },
-        { type: 'text-summary' }
-      ]
+        { type: 'text-summary' },
+        { type: 'lcov' }
+      ],
+      check: {
+        global: {
+          statements: 70,
+          branches: 60,
+          functions: 70,
+          lines: 70
+        }
+      }
     },
     reporters: ['progress', 'kjhtml'],
-    browsers: ['Chrome'],
-    restartOnFileChange: true
+    browsers: ['Chrome', 'ChromeHeadless'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu', '--disable-web-security', '--disable-dev-shm-usage']
+      }
+    },
+    restartOnFileChange: true,
+    browserNoActivityTimeout: 40000 // Increased timeout for slower machines
   });
 };
