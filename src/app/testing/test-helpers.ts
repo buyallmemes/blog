@@ -52,7 +52,7 @@ export function createMock<T>(overrides: Partial<T> = {}): T {
 /**
  * Wait for async operations to complete
  */
-export async function waitForAsync(fixture: ComponentFixture<any>): Promise<void> {
+export async function waitForAsync<T>(fixture: ComponentFixture<T>): Promise<void> {
   fixture.detectChanges();
   await fixture.whenStable();
   fixture.detectChanges();
