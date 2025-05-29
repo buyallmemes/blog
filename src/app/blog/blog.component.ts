@@ -5,7 +5,7 @@
 import {AfterViewChecked, Component, inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
-import {isPlatformBrowser, Location, NgForOf, NgIf} from '@angular/common';
+import {isPlatformBrowser, Location, NgForOf, NgIf, ViewportScroller} from '@angular/common';
 import {Subscription, switchMap, tap} from 'rxjs';
 
 // Application imports
@@ -50,7 +50,8 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     private highlightService: HighlightService,
     private titleService: Title,
     private location: Location,
-    private blogService: BlogService
+    private blogService: BlogService,
+    private viewportScroller: ViewportScroller
   ) {
     const platformId = inject(PLATFORM_ID);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -107,6 +108,11 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     const url = `/blog/${post.anchor}`;
     this.location.go(url);
 
+    // Scroll to top of page when selecting a new post
+    if (this.isBrowser) {
+      this.scrollToTop();
+    }
+
     // Fetch full post content if needed
     this.blogService.fetchPost(post.anchor).subscribe({
       next: (fullPost) => {
@@ -118,6 +124,19 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.loading = false;
       }
     });
+  }
+
+  /**
+   * Scrolls the viewport to the top of the page.
+   * Uses immediate scrolling for better user experience.
+   */
+  private scrollToTop(): void {
+    // Using setTimeout to ensure this happens after the view has been updated
+    setTimeout(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      // As a fallback, also use window.scrollTo
+      window.scrollTo(0, 0);
+    }, 0);
   }
 
   /**
@@ -187,6 +206,11 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
         next: (post) => {
           this.selectedPost = post;
           this.loading = false;
+
+          // Scroll to top when a post is loaded via URL navigation
+          if (this.isBrowser) {
+            this.scrollToTop();
+          }
         },
         error: () => {
           // If post not found, default to first available post
@@ -195,6 +219,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
             // Update URL in browser environment
             if (this.isBrowser) {
               this.location.go(`/blog/${availablePosts[0].anchor}`);
+              this.scrollToTop();
             }
           }
           this.loading = false;
