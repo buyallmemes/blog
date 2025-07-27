@@ -14,14 +14,9 @@ frontend:
       commands:
         - echo "Building Angular SSR application..."
         - npm run build
-        - echo "Preparing SSR deployment structure..."
-        - mkdir -p .amplify-hosting/compute/default
-        - mkdir -p .amplify-hosting/static
-        - cp dist/blog/server/server.mjs .amplify-hosting/compute/default/
-        - cp -r dist/blog/browser/* .amplify-hosting/static/
-        - echo "SSR deployment structure ready"
+        - echo "Deployment ready - serving pre-rendered static files"
   artifacts:
-    baseDirectory: .amplify-hosting
+    baseDirectory: dist/blog/browser
     files:
       - '**/*'
   cache:
