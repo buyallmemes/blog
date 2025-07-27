@@ -98,14 +98,18 @@ describe('BlogComponent', () => {
 
   it('should select post based on fragment', () => {
     expect(component.selectedPost).toEqual(mockPosts[0]);
-    expect(component.fragment).toBe('first-post');
+    expect(component.postId).toBe('first-post');
   });
 
   it('should update page title based on selected post', () => {
     expect(mockTitleService.setTitle).toHaveBeenCalledWith('BuyAllMemes Blog - First Post');
   });
 
-  it('should call highlight service after view checked', () => {
+  it('should call highlight service after view checked when not loading', () => {
+    // Ensure loading is false and we're in browser environment
+    component.loading = false;
+    (component as any).isBrowser = true;
+    
     component.ngAfterViewChecked();
     expect(mockHighlightService.highlightAll).toHaveBeenCalled();
   });
@@ -121,14 +125,16 @@ describe('BlogComponent', () => {
   });
 
   it('should select post when selectPost is called', () => {
+    // Mock Location service since the component uses location.go() instead of router.navigate()
+    const mockLocation = jasmine.createSpyObj('Location', ['go']);
+    (component as any).location = mockLocation;
+
     component.selectPost(mockPosts[1]);
 
     expect(component.selectedPost).toEqual(mockPosts[1]);
-    expect(component.fragment).toBe('second-post');
-    // The component uses path-based navigation, not fragment-based
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/post', 'second-post'], {
-      replaceUrl: false,
-    });
+    expect(component.postId).toBe('second-post');
+    // The component uses location.go(), not router.navigate()
+    expect(mockLocation.go).toHaveBeenCalledWith('/blog/second-post');
   });
 
   it('should correctly identify selected post', () => {

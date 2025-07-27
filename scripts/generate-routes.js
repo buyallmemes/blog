@@ -42,19 +42,16 @@ function fetchPostsFromAPI() {
         try {
           const response = JSON.parse(data);
           if (response.posts && Array.isArray(response.posts)) {
-            console.log(`✅ Fetched ${response.posts.length} posts from API`);
+            console.log(`✅ Fetched ${response.posts.length} posts`);
             resolve(response.posts);
           } else {
-            console.error('❌ Invalid API response format');
             reject(new Error('Invalid API response format'));
           }
         } catch (error) {
-          console.error('❌ Failed to parse API response:', error.message);
           reject(error);
         }
       });
     }).on('error', (error) => {
-      console.error('❌ API request failed:', error.message);
       reject(error);
     });
   });
@@ -87,8 +84,6 @@ async function generateRoutesFromAPI() {
         const route = `/blog/${post.anchor}`;
         routes.push(route);
         console.log(`✅ Found post: "${post.title}" -> ${route}`);
-      } else {
-        console.warn(`⚠️  Invalid post format:`, post);
       }
     }
     
@@ -96,7 +91,6 @@ async function generateRoutesFromAPI() {
     
   } catch (error) {
     console.warn('⚠️  Failed to fetch from API, using fallback routes...');
-    console.error('Error details:', error.message);
     writeRoutesFile(FALLBACK_ROUTES, 'fallback');
   }
 }
