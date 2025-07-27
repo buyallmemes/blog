@@ -212,22 +212,27 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
             this.scrollToTop();
           }
         },
-        error: () => {
+        error: (error) => {
+          console.warn(`Failed to fetch post "${this.postId}":`, error);
+          
           // Try to find the post in the available posts list
           const foundPost = availablePosts.find(post => post.anchor === this.postId);
           if (foundPost) {
+            console.log(`Found post "${this.postId}" in available posts, using cached version`);
             this.selectedPost = foundPost;
             if (this.isBrowser) {
               this.scrollToTop();
             }
           } else if (availablePosts.length > 0) {
-            // If post not found, default to first available post
+            // If post not found and we have no cached version, 
+            // preserve the original URL that the user requested
+            console.warn(`Post "${this.postId}" not found in available posts, showing first post but preserving URL`);
             this.selectedPost = availablePosts[0];
-            // Update URL in browser environment
             if (this.isBrowser) {
-              this.location.go(`/blog/${availablePosts[0].anchor}`);
               this.scrollToTop();
             }
+          } else {
+            console.error(`No posts available and failed to fetch "${this.postId}"`);
           }
           this.loading = false;
         }
