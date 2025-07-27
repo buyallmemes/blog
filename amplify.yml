@@ -3,17 +3,21 @@ frontend:
   phases:
     preBuild:
       commands:
-        - bash setup-node.sh
+        - echo "Node.js version $(node --version)"
+        - echo "npm version $(npm --version)"
         - npm ci
     build:
       commands:
-        - export NVM_DIR="$HOME/.nvm"
-        - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
-        - nvm use 20.19.0
-        - echo "Build with Node.js version $(node --version)"
+        - echo "Building Angular SSR application..."
         - npm run build
+        - echo "Preparing SSR deployment structure..."
+        - mkdir -p .amplify-hosting/compute/default
+        - mkdir -p .amplify-hosting/static
+        - cp dist/blog/server/server.mjs .amplify-hosting/compute/default/
+        - cp -r dist/blog/browser/* .amplify-hosting/static/
+        - echo "SSR deployment structure ready"
   artifacts:
-    baseDirectory: dist/blog/browser
+    baseDirectory: .amplify-hosting
     files:
       - '**/*'
   cache:

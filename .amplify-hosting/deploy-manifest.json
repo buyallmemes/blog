@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "routes": [
+    {
+      "path": "/_app/*",
+      "target": { "kind": "Static" }
+    },
+    {
+      "path": "/assets/*",
+      "target": { "kind": "Static" }
+    },
+    {
+      "path": "/*.*",
+      "target": { "kind": "Static" },
+      "fallback": { "kind": "Compute", "src": "default" }
+    },
+    {
+      "path": "/*",
+      "target": { "kind": "Compute", "src": "default" }
+    }
+  ],
+  "computeResources": [
+    {
+      "name": "default",
+      "runtime": "nodejs20.x",
+      "entrypoint": "server.mjs"
+    }
+  ],
+  "framework": {
+    "name": "angular",
+    "version": "20.1.3"
+  }
+}

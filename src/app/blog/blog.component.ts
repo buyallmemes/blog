@@ -238,8 +238,9 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
         }
       });
     } else if (availablePosts.length > 0) {
-      // No postId specified, use first available post
-      this.selectPost(availablePosts[0]);
+      // No postId specified, set first available post without URL update
+      this.selectedPost = availablePosts[0];
+      this.postId = availablePosts[0].anchor;
     }
   }
 
