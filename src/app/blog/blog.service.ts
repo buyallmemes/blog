@@ -108,7 +108,7 @@ export class BlogService {
 
   /**
    * Fetches a single blog post by its anchor.
-   * Uses cached data if available.
+   * Uses cached data if available, or fetches from the full blog data.
    *
    * @param anchor The post anchor/slug
    * @returns An Observable that emits the post data
@@ -128,30 +128,23 @@ export class BlogService {
       return of(cachedPost);
     }
 
-    // Otherwise fetch from API
-    return this.httpClient.get<Post>(`${this.postApiUrl}/${anchor}`).pipe(
-      timeout(API_TIMEOUT_MS),
-      retry(2),
-      tap(post => {
-        // Store in cache
+    // Fetch from the full blog data (eliminates individual API calls)
+    return this.fetchBlog().pipe(
+      map(blog => {
+        const post = blog.posts.find(p => p.anchor === anchor);
+        if (!post) {
+          throw new Error(`Post with anchor "${anchor}" not found`);
+        }
+        
+        // Store in cache for future use
         this.postCache.set(anchor, post);
-
+        
         // Store in transfer state if on server
         if (isPlatformServer(this.platformId)) {
           this.transferState.set(postStateKey, post);
         }
-      }),
-      catchError(() => {
-        // If individual post fetch fails, try getting it from the full blog data
-        return this.fetchBlog().pipe(
-          map(blog => {
-            const post = blog.posts.find(p => p.anchor === anchor);
-            if (!post) {
-              throw new Error(`Post with anchor "${anchor}" not found`);
-            }
-            return post;
-          })
-        );
+        
+        return post;
       })
     );
   }

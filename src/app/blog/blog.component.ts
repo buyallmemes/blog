@@ -213,8 +213,15 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
           }
         },
         error: () => {
-          // If post not found, default to first available post
-          if (availablePosts.length > 0) {
+          // Try to find the post in the available posts list
+          const foundPost = availablePosts.find(post => post.anchor === this.postId);
+          if (foundPost) {
+            this.selectedPost = foundPost;
+            if (this.isBrowser) {
+              this.scrollToTop();
+            }
+          } else if (availablePosts.length > 0) {
+            // If post not found, default to first available post
             this.selectedPost = availablePosts[0];
             // Update URL in browser environment
             if (this.isBrowser) {

@@ -35,7 +35,7 @@
 						"scripts": [],
 						"server": "src/main.server.ts",
 						"prerender": true,
-							"allowedCommonJsDependencies": [
+						"allowedCommonJsDependencies": [
 							"prismjs",
 							"prismjs/plugins/toolbar/prism-toolbar",
 							"prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard",
