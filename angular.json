@@ -33,8 +33,6 @@
 							"src/styles.scss"
 						],
 						"scripts": [],
-						"server": "src/main.server.ts",
-						"prerender": true,
 						"allowedCommonJsDependencies": [
 							"prismjs",
 							"prismjs/plugins/toolbar/prism-toolbar",
@@ -47,10 +45,7 @@
 							"prismjs/components/prism-scss",
 							"prismjs/components/prism-java",
 							"prismjs/components/prism-bash"
-						],
-						"ssr": {
-							"entry": "server.ts"
-						}
+						]
 					},
 					"configurations": {
 						"production": {

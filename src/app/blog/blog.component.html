@@ -6,9 +6,9 @@
         <h2 class="font-bold mb-6 border-b border-neutral-200">All Posts</h2>
 
         <div class="mt-4 flex flex-col gap-4">
-          <ng-container *ngIf="blog && blog.posts && blog.posts.length > 0">
+          <ng-container *ngIf="posts && posts.length > 0">
             <div
-              *ngFor="let post of blog.posts"
+              *ngFor="let post of posts"
               class="post-list-item p-4 rounded-lg cursor-pointer"
               [class.active]="isSelectedPost(post)"
               [style.background-color]="isSelectedPost(post) ? '#e3f2fd' : '#fafafa'"
@@ -18,12 +18,12 @@
               (click)="selectPost(post)"
             >
               <h3 class="font-bold mb-2">{{ post.title }}</h3>
-              <p>{{ post.date }}</p>
+              <p>{{ post.publishedDate }}</p>
             </div>
           </ng-container>
 
           <div
-            *ngIf="!blog || !blog.posts || blog.posts.length === 0"
+            *ngIf="!posts || posts.length === 0"
             class="text-center p-4 bg-neutral-50 rounded-lg"
           >
             <p>No posts available</p>
@@ -37,11 +37,8 @@
       <div *ngIf="selectedPost">
         <app-post [post]="selectedPost"></app-post>
       </div>
-      <div *ngIf="!selectedPost && blog && blog.posts && blog.posts.length > 0">
-        <app-post [post]="blog.posts[0]"></app-post>
-      </div>
       <div
-        *ngIf="!blog || !blog.posts || blog.posts.length === 0"
+        *ngIf="!selectedPost || !posts || posts.length === 0"
         class="text-center p-4 bg-neutral-100 rounded-lg shadow-sm mb-6"
       >
         <h2 class="font-bold mb-6">Nothing to see here</h2>

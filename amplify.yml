@@ -3,18 +3,11 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "Setting up Node.js 20..."
-        - nvm install 20
         - nvm use 20
-        - nvm alias default 20
-        - echo "Node.js version $(node --version)"
-        - echo "npm version $(npm --version)"
         - npm ci
     build:
       commands:
-        - echo "Building Angular SSR application..."
         - npm run build
-        - echo "Deployment ready - serving pre-rendered static files"
   artifacts:
     baseDirectory: dist/blog/browser
     files:
