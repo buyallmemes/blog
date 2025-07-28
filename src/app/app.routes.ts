@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
 import { BlogComponent } from './blog/blog.component';
-import { blogResolver } from './blog/blog.resolver';
 
 export const routes: Routes = [
-  { path: '', component: BlogComponent, resolve: { blog: blogResolver } },
-  { path: 'blog/:postId', component: BlogComponent, resolve: { blog: blogResolver } },
+  { path: '', component: BlogComponent },
+  { path: 'blog/:postId', component: BlogComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
