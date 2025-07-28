@@ -14,9 +14,11 @@ frontend:
       commands:
         - echo "Building static Angular application..."
         - npm run build
+        - echo "Creating deploy manifest..."
+        - echo '{"version":"1","framework":{"name":"angular","version":"20.1.3"}}' > dist/blog/browser/deploy-manifest.json
         - echo "Build completed"
   artifacts:
-    baseDirectory: dist/blog
+    baseDirectory: dist/blog/browser
     files:
       - '**/*'
   cache:
