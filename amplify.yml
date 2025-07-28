@@ -3,10 +3,14 @@ frontend:
   phases:
     preBuild:
       commands:
+        - nvm install 20
         - nvm use 20
+        - node --version
+        - npm --version
         - npm ci
     build:
       commands:
+        - nvm use 20
         - npm run build
   artifacts:
     baseDirectory: dist/blog/browser
