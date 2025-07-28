@@ -1,9 +1,0 @@
-/* Use Tailwind's @apply directive for consistent styling */
-.app-content {
-  @apply py-6;
-
-  /* Ensure router-outlet children are properly styled */
-  & > * {
-    @apply flex flex-col;
-  }
-}
