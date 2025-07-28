@@ -6,8 +6,7 @@
 export interface Post {
   anchor: string;
   title: string;
-  excerpt: string;
   content: string;
-  publishedDate: string;
-  tags: string[];
+  date: string;
+  filename: string;
 }

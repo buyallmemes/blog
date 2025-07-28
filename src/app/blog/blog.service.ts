@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { Blog } from './blog';
 import { Post } from '../post/post';
-import { BLOG_POSTS } from '../posts.data';
+// Blog service is no longer used - posts come from static JSON
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class BlogService {
   /**
    * Subject that emits when posts list is updated
    */
-  private postsSubject = new BehaviorSubject<Post[]>(BLOG_POSTS);
+  private postsSubject = new BehaviorSubject<Post[]>([]);
 
   /**
    * Observable that clients can subscribe to for posts list updates
@@ -23,20 +23,16 @@ export class BlogService {
   public posts$ = this.postsSubject.asObservable();
 
   /**
-   * Returns hardcoded blog data immediately.
+   * Returns empty blog data - not used anymore.
    */
   fetchBlog(): Observable<Blog> {
-    return of({ posts: BLOG_POSTS });
+    return of({ posts: [] });
   }
 
   /**
-   * Fetches a single blog post by its anchor.
+   * Not used anymore - posts come from static JSON.
    */
   fetchPost(anchor: string): Observable<Post> {
-    const post = BLOG_POSTS.find(p => p.anchor === anchor);
-    if (!post) {
-      throw new Error(`Post with anchor "${anchor}" not found`);
-    }
-    return of(post);
+    throw new Error('Blog service no longer used');
   }
 }

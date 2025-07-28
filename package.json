@@ -9,6 +9,8 @@
     "ng": "ng",
     "start": "ng serve --configuration dev",
     "start-local": "concurrently \"ng serve --configuration local\" \"node mock-server.js\"",
+    "fetch-posts": "node scripts/fetch-posts.js",
+    "prebuild": "npm run fetch-posts",
     "build": "ng build --configuration production",
     "build:dev": "ng build --configuration dev",
     "build:ssg": "npm run generate-routes && ng build --configuration production",

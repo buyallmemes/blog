@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 import {PostComponent} from '../post/post.component';
 import {Post} from '../post/post';
 import {HighlightService} from './highlight.service';
-import {BLOG_POSTS} from '../posts.data';
+import postsData from '../posts.json';
 
 @Component({
   selector: 'app-blog',
@@ -55,8 +55,8 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    * Lifecycle hook that is called when the component is initialized.
    */
   ngOnInit(): void {
-    // Dead simple: get posts and show the right one
-    this.posts = BLOG_POSTS;
+    // Dead simple: get posts from API-generated JSON and show the right one
+    this.posts = postsData as Post[];
     const postId = this.route.snapshot.paramMap.get('postId');
     this.selectedPost = this.posts.find(p => p.anchor === postId) || this.posts[0];
   }
