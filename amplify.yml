@@ -14,26 +14,7 @@ frontend:
       commands:
         - echo "Building static Angular application..."
         - npm run build
-        - echo "Creating proper deploy manifest..."
-        - |
-          cat > dist/blog/browser/deploy-manifest.json << 'EOF'
-          {
-            "version": 1,
-            "routes": [
-              {
-                "path": "/*",
-                "target": {
-                  "kind": "Static"
-                }
-              }
-            ],
-            "framework": {
-              "name": "angular",
-              "version": "20.1.3"
-            }
-          }
-          EOF
-        - echo "Build completed"
+        - echo "Build completed - no deploy manifest needed for simple static site"
   artifacts:
     baseDirectory: dist/blog/browser
     files:
