@@ -14,9 +14,12 @@ frontend:
       commands:
         - echo "Building static Angular application..."
         - npm run build
-        - echo "Build completed - no deploy manifest needed for simple static site"
+        - echo "Preparing static deployment structure like the working commit..."
+        - mkdir -p .amplify-hosting/static
+        - cp -r dist/blog/browser/* .amplify-hosting/static/
+        - echo "Static deployment structure ready"
   artifacts:
-    baseDirectory: dist/blog/browser
+    baseDirectory: .amplify-hosting
     files:
       - '**/*'
   cache:
