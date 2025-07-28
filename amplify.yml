@@ -3,17 +3,20 @@ frontend:
   phases:
     preBuild:
       commands:
+        - echo "Setting up Node.js 20..."
         - nvm install 20
-        - nvm use 20
-        - node --version
-        - npm --version
+        - nvm use 20 
+        - nvm alias default 20
+        - echo "Node.js version $(node --version)"
+        - echo "npm version $(npm --version)"
         - npm ci
     build:
       commands:
-        - nvm use 20
+        - echo "Building static Angular application..."
         - npm run build
+        - echo "Build completed"
   artifacts:
-    baseDirectory: dist/blog/browser
+    baseDirectory: dist/blog
     files:
       - '**/*'
   cache:
