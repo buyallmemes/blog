@@ -2,23 +2,21 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const API_URL = 'https://api.buyallmemes.com/posts';
 const OUTPUT_FILE = path.join(__dirname, '../src/app/posts.json');
 
-async function fetchPosts() {
+function fetchPosts() {
   console.log('🔄 Fetching posts from API...');
   
   try {
-    const response = await fetch(API_URL);
+    // Use curl for maximum compatibility in CI environments
+    console.log(`🌐 Fetching from: ${API_URL}`);
+    const curlResult = execSync(`curl -s "${API_URL}"`, { encoding: 'utf8' });
     
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
+    const data = JSON.parse(curlResult);
     const posts = data.posts || data; // Handle both {posts: [...]} and [...] formats
-    
     console.log(`✅ Fetched ${posts.length} posts from API`);
     
     // Write to JSON file
