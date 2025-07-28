@@ -10,9 +10,8 @@ import {Subscription} from 'rxjs';
 // Application imports
 import {PostComponent} from '../post/post.component';
 import {Post} from '../post/post';
-import {Blog} from './blog';
 import {HighlightService} from './highlight.service';
-import {BlogService} from './blog.service';
+import {BLOG_POSTS} from '../posts.data';
 
 @Component({
   selector: 'app-blog',
@@ -41,8 +40,7 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     private route: ActivatedRoute,
     private highlightService: HighlightService,
     private titleService: Title,
-    private location: Location,
-    private blogService: BlogService
+    private location: Location
   ) {}
 
   /**
@@ -57,11 +55,10 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
    * Lifecycle hook that is called when the component is initialized.
    */
   ngOnInit(): void {
-    // Get posts from service
-    this.blogService.posts$.subscribe(posts => {
-      this.posts = posts;
-      this.initializeFromRoute();
-    });
+    // Dead simple: get posts and show the right one
+    this.posts = BLOG_POSTS;
+    const postId = this.route.snapshot.paramMap.get('postId');
+    this.selectedPost = this.posts.find(p => p.anchor === postId) || this.posts[0];
   }
 
   /**
@@ -94,23 +91,6 @@ export class BlogComponent implements OnInit, AfterViewChecked, OnDestroy {
     return this.selectedPost?.anchor === post.anchor;
   }
 
-  /**
-   * Initialize from route parameters.
-   */
-  private initializeFromRoute(): void {
-    this.route.paramMap.subscribe(params => {
-      const postId = params.get('postId');
-      
-      if (postId && this.posts.length > 0) {
-        const post = this.posts.find(p => p.anchor === postId);
-        this.selectedPost = post || this.posts[0];
-        this.postId = this.selectedPost.anchor;
-      } else if (this.posts.length > 0) {
-        this.selectedPost = this.posts[0];
-        this.postId = this.posts[0].anchor;
-      }
-    });
-  }
 
   /**
    * Updates the page title based on the selected post.
