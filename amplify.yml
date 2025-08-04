@@ -5,36 +5,36 @@ frontend:
       commands:
         - echo "Installing dependencies..."
         - npm ci
-        
+
     build:
       commands:
         # Code quality checks
         - echo "Running code formatting check..."
         - npm run format:check
-        
+
         - echo "Running ESLint..."
         - npm run lint
-        
+
         # TypeScript type checking
         - echo "Running TypeScript type checking..."
         - npx tsc --noEmit
-        
+
         # Note: E2E tests run in GitHub Actions CI/CD
         # Amplify doesn't support Playwright browser dependencies
         - echo "Skipping E2E tests in Amplify (run in GitHub Actions)..."
-        
+
         # Build the application
         - echo "Building Next.js application..."
         - npm run build
-        
+
   artifacts:
     baseDirectory: .next
     files:
       - '**/*'
-      
+
   cache:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
-      
+
   framework: 'Next.js - SSR'
