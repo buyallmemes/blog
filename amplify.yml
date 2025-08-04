@@ -6,10 +6,6 @@ frontend:
         - echo "Installing dependencies..."
         - npm ci
         
-        # Install Playwright browsers for testing
-        - echo "Installing Playwright browsers..."
-        - npx playwright install --with-deps chromium
-        
     build:
       commands:
         # Code quality checks
@@ -23,9 +19,9 @@ frontend:
         - echo "Running TypeScript type checking..."
         - npx tsc --noEmit
         
-        # Run tests before building
-        - echo "Running Playwright E2E tests..."
-        - npm test
+        # Note: E2E tests run in GitHub Actions CI/CD
+        # Amplify doesn't support Playwright browser dependencies
+        - echo "Skipping E2E tests in Amplify (run in GitHub Actions)..."
         
         # Build the application
         - echo "Building Next.js application..."
@@ -40,6 +36,5 @@ frontend:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
-      - ~/.cache/ms-playwright/**/*  # Cache Playwright browsers
       
   framework: 'Next.js - SSR'
