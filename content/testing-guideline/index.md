@@ -67,30 +67,31 @@ It all starts with the testing pyramid —
 a testing strategy that emphasizes the importance of having a balanced mix of different types of tests.
 There are many types of tests, but they can be categorized into three groups:
 
-* unit tests
-* integration tests
-* end-to-end tests
+- unit tests
+- integration tests
+- end-to-end tests
 
 The aim is to have a higher percentage of unit tests and a lower percentage of end-to-end tests to ensure faster
 feedback loops and more robust code.
 
-![](assets/20240406-tg/image-20230327-114635.png)
+![](images/image-20230327-114635.png)
 
-*$$$ — expensive tests, a lot of machinery and time are involved*
+_$$$ — expensive tests, a lot of machinery and time are involved_
 
-*$ — cheap tests, very little resources and time are required*
+_$ — cheap tests, very little resources and time are required_
 
 In this article, I will mainly focus on unit tests with sprinkles of integration tests.
 
 #### References
 
-* [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)
+- [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)
 
 # Unit tests
 
 ## What is a _unit_?
 
 Before I dive deep into technics and dos-and-don'ts, we have to come to terms with "What is a _unit_?".
+
 > "Unit — an individual thing or person regarded as single and complete but which can also form an individual component
 > of a larger or more complex whole."— Google a.k.a.
 > Oxford dictionary
@@ -196,7 +197,7 @@ As soon as you feel comfortable, skip the first step.
 
 ### Testable Design is Good Design
 
-![](assets/20240406-tg/image-20230328-072454.png)
+![](images/image-20230328-072454.png)
 
 Having to mock more than five plus dependencies is a sign of a bad production code design.
 
@@ -373,7 +374,7 @@ tests, and improving test readability.
 
 Follow the AAA pattern (Arrange, Act, Assert)/GWT pattern (Given, When, Then)
 
-![](assets/20240406-tg/image-20230327-122231.png)
+![](images/image-20230327-122231.png)
 
 ### Have many test classes per production class
 
@@ -382,9 +383,9 @@ Every test that needs a slightly different setup should go into a separate test 
 It helps to understand what exactly is going on in a test class.
 For example, `FooServiceUserNotFoundExceptionTest` requires little to no explanations.
 
-* Not sure about where to put new tests? Create a new class.
+- Not sure about where to put new tests? Create a new class.
 
-* The test class is getting too big and requires a lot of doom-scrolling?
+- The test class is getting too big and requires a lot of doom-scrolling?
   Split it into several test classes.
   This is also a good indicator that the class under the test is too big with too many responsibilities.
   Refactor it.
@@ -452,22 +453,22 @@ Don’t strive to have high code coverage for the manager's sake.
 80% coverage could be achieved by spending just a little bit of effort.
 The last 20% of coverage will take you approximately four times as much.
 
-![](assets/20240406-tg/image-20230331-114754.png)
+![](images/image-20230331-114754.png)
 
 ### Keep your unit tests fast
 
-*Ludicrously* fast.
+_Ludicrously_ fast.
 Run unit tests often.
 Run unit tests all the time.  
 Keep in mind that unit tests are focussing on behavior.
 Timing and concurrency should never be a part of the unit test — otherwise,
 you end up with non-deterministic results.
 
-* No `Thread.sleep(..)`.
+- No `Thread.sleep(..)`.
 
-* No [http://www.awaitility.org/](http://www.awaitility.org/).
+- No [http://www.awaitility.org/](http://www.awaitility.org/).
 
-* No `while(...){...}`
+- No `while(...){...}`
 
 Keep these techniques for integration tests.
 
@@ -518,9 +519,9 @@ I like to keep my unit tests simple, fast, and away from the network.
 
 ### Keep your tests 100% deterministic
 
-* No flakiness.
+- No flakiness.
 
-* No time dependence.  
+- No time dependence.  
   Avoid `Instance.now()`and such.
   Instead, create a small component and inject it **_everywhere_** you need a current
   date.
@@ -537,13 +538,13 @@ I like to keep my unit tests simple, fast, and away from the network.
   It could be easily mocked and tested.
   A thing of beauty.
 
-* No network interaction — the network is slow, avoid it
+- No network interaction — the network is slow, avoid it
 
-* Avoid concurrency and multithreading, unless this is your prime objective
+- Avoid concurrency and multithreading, unless this is your prime objective
 
 ### Use mocking judiciously
 
-* Mock behavior, not data.  
+- Mock behavior, not data.  
   **Bad:**
 
   ```java
@@ -568,13 +569,13 @@ I like to keep my unit tests simple, fast, and away from the network.
                                  .build();     //ugly target class is encapsulated
   ```
 
-* Don't Mock Getters.  
+- Don't Mock Getters.  
   Just don’t.
 
-* Don't have Mocks return Mocks.  
+- Don't have Mocks return Mocks.  
   Every time you do that, a fairy dies 🧚😢
 
-* Overuse of mocks leads to brittle tests and code that is difficult to maintain.
+- Overuse of mocks leads to brittle tests and code that is difficult to maintain.
 
 It is perfectly fine to use _real classes_ instead of mocked interfaces.  
 Mocked interfaces are hard to change - every API change will break **ALL** tests.
@@ -585,33 +586,33 @@ Or even better - start with a small integration test.
 
 Assuming we have something like:
 
-  ```java
+```java
 
 @RequiredArgsConstructor
 class A {
-    private final B b;
+  private final B b;
 
-    public String getSomething() {
-        return b.computeSomething();
-    }
+  public String getSomething() {
+      return b.computeSomething();
+  }
 }
 
 @RequiredArgsConstructor
 class B {
-    private final CRepository cRepository;
+  private final CRepository cRepository;
 
-    public String computeSomething() {
-        return cRepository.getSomething() + " World!";
-    }
+  public String computeSomething() {
+      return cRepository.getSomething() + " World!";
+  }
 }
 
 class CRepository {
-    // represention of a database
-    public String getSomething() {
-        return "Hello";
-    }
+  // represention of a database
+  public String getSomething() {
+      return "Hello";
+  }
 }
-  ```
+```
 
 Class **A** injects class **B**, and class **B** injects class **CRepository**. Nothing crazy.
 
@@ -678,18 +679,19 @@ As soon as the API of class **B** is getting more mature (ready to be merged int
 If you're using a framework with a dependency injection mechanism, you probably can specify the set of dependencies to
 include in the test.  
 This is how Spring does it:
+
 ```java
 
     @ExtendWith(SpringExtension.class) // Enables Spring to take control over the test execution
     @Import({A.class, B.class}) //classes that will be included into the test Spring Context
     public class ATest {
-    
+
         @Autowire
         private A a; //A will be instantiated by Spring
         //B will be injected automatically
         @MockBean
         private CRepository cRepository; //Mock of CRepository will be injected into B
-    
+
         @Test
         void test() {
             when(cRepository.getSomething()).thenReturn("Hello");
@@ -832,63 +834,62 @@ therefore instance variable `List<String> names` will not be shared.
 
 **Bad and absolutely useless log:**
 
-![](assets/20240406-tg/image-20230329-074245.png)
+![](images/image-20230329-074245.png)
 
 Good luck finding anything there.
 
 **Good(but not perfect, too much output from Maven) output of the failing test suite:**
 
-![](assets/20240406-tg/image-20230329-074340.png)
+![](images/image-20230329-074340.png)
 
 A simple browser search will reveal all the necessary information.
 
 ### Eliminate everything that makes input and output unclear
 
-* Never generate random input.
+- Never generate random input.
 
-* Don’t use named constants from the production code.  
+- Don’t use named constants from the production code.  
   What if there’s a type-o?  
   Prefer literal strings and numbers, even when it means duplication.
 
 ### Keep assertions simple
 
-* Too many assertions make tests difficult to read, maintain and blur the overall picture
+- Too many assertions make tests difficult to read, maintain and blur the overall picture
 
-* Strive to have one `assert...` per test for maximum readability
+- Strive to have one `assert...` per test for maximum readability
 
-* Avoid any sort of conditional logic or logic in general in your assertions.
+- Avoid any sort of conditional logic or logic in general in your assertions.
   Otherwise, you’ll have to write tests to test your tests.
 
   **Bad:**
 
-    ```java
-      assertEquals("Hello"+expectedPersonName, actualGreeting);
-    ```
+  ```java
+    assertEquals("Hello"+expectedPersonName, actualGreeting);
+  ```
 
   Even the simplest logic, like string concatenation, can produce errors.
   Have you noticed the missing (space) after “Hello”?
   Users will notice.  
   **Good:**
 
-    ```java
-      assertEquals("Hello John Doe",actualGreeting);
-    ```
+  ```java
+    assertEquals("Hello John Doe",actualGreeting);
+  ```
 
   Leave no room for errors.
   At least, in unit tests.
 
-* Be mindful of what is actually going on behind `assertEquals()`  
+- Be mindful of what is actually going on behind `assertEquals()`  
   It is not the best suitable to test collections.
   Use [https://assertj.github.io/doc/](https://assertj.github.io/doc/) `.contains()`, `.containsExactly()`, `.containsExactlyInAnyOrder()`,
   etc. instead.
   Don’t over-abuse AssertJ, as it leads to overly complex tests.
   Use simple standard assertions where possible.
+  - Assertions should not be smart
 
-    * Assertions should not be smart
+  - **Assertions should be simple**
 
-    * **Assertions should be simple**
-
-* Use `assertAll()` to see the whole picture.  
+- Use `assertAll()` to see the whole picture.  
   **Bad:**
 
   ```java
@@ -914,7 +915,7 @@ A simple browser search will reveal all the necessary information.
   You will see the full picture.
   Although the test itself is starting to look rather ugly.
 
-* Use the assert message parameter to help future you understand what exactly is going on.  
+- Use the assert message parameter to help future you understand what exactly is going on.  
   `assertEquals(expected.getId(), actual.getId(), "User Id")` ← every `assert..` method has n+1 parameters.
   It accepts not only a `String` but also a `Supplier<String>`.
   Even the simplest predefined message is much better than `AssertionFailedError: Expected 1 Actual 2`.
@@ -952,72 +953,71 @@ Architectural tests are extremely useful for preserving(or forcing) project stru
 
 For example:
 
-* prevent accessing classes in a certain package from another class in another package
+- prevent accessing classes in a certain package from another class in another package
   (a.k.a. don't inject repository into the controller)
 
-* forbid accessing internal implementation of the module directly, and force usage of the API layer
+- forbid accessing internal implementation of the module directly, and force usage of the API layer
 
 Overall, architectural tests should be quite deep in your toolbox.
 Don’t just wave it left and right.
 
 ### Avoid fake test coverage
 
-* Test coverage is a useful metric that can help **identify** untested code paths
+- Test coverage is a useful metric that can help **identify** untested code paths
 
-* Test coverage is **just a metric**, and **should not** be the sole purpose of writing tests
+- Test coverage is **just a metric**, and **should not** be the sole purpose of writing tests
 
-* Writing tests solely to increase test coverage can lead to dangerous **fake** and **meaningless** coverage, where
+- Writing tests solely to increase test coverage can lead to dangerous **fake** and **meaningless** coverage, where
   tests are written to simply execute the code paths with no actually asserting or verifying results
 
-* Fake coverage leads to a **false** sense of security, where developers think they have thoroughly tested their code
+- Fake coverage leads to a **false** sense of security, where developers think they have thoroughly tested their code
   when in reality they are not
 
-* Using tools like Sonar or other static code analyzers **can help** identify missed execution paths, but they **should
+- Using tools like Sonar or other static code analyzers **can help** identify missed execution paths, but they **should
   not** be used to enforce writing tests for the sake of coverage
 
-* Focus on writing tests that **actually** **test** functionality and ensure that code is working as expected,
+- Focus on writing tests that **actually** **test** functionality and ensure that code is working as expected,
   rather than just trying to increase test coverage
 
-* Good test coverage alone **does not** guarantee the quality or correctness of code
+- Good test coverage alone **does not** guarantee the quality or correctness of code
 
-* **It is better to have no test coverage than a fake one.**
+- **It is better to have no test coverage than a fake one.**
   With no coverage, at least, there is an incentive to write tests
 
 ### How to identify “fake” tests?
 
-* Try to break the test — if the only way to break the test is to delete some lines of code, it might be a fake
+- Try to break the test — if the only way to break the test is to delete some lines of code, it might be a fake
   test
 
-* Vague argument matchers - screams fake
+- Vague argument matchers - screams fake
 
-* Messy overly complex tests — there’s a high probability that some coverage is fake
+- Messy overly complex tests — there’s a high probability that some coverage is fake
 
-* Tests without any meaningful assertions or verifications - 100% fake
+- Tests without any meaningful assertions or verifications - 100% fake
 
-* Tests that test getters and setters — it’s not fake, but a horrible way to increase the test coverage
+- Tests that test getters and setters — it’s not fake, but a horrible way to increase the test coverage
 
-* Tests that do not follow this testing guideline — most certainly fake 😉.
-
+- Tests that do not follow this testing guideline — most certainly fake 😉.
 
 ### References
 
-* [https://www.baeldung.com/java-unit-testing-best-practices](https://www.baeldung.com/java-unit-testing-best-practices)
+- [https://www.baeldung.com/java-unit-testing-best-practices](https://www.baeldung.com/java-unit-testing-best-practices)
 
-* [https://junit.org/junit5/docs/current/user-guide/](https://junit.org/junit5/docs/current/user-guide/)
+- [https://junit.org/junit5/docs/current/user-guide/](https://junit.org/junit5/docs/current/user-guide/)
 
-* [https://understandlegacycode.com/blog/key-points-of-working-effectively-with-legacy-code/](https://understandlegacycode.com/blog/key-points-of-working-effectively-with-legacy-code/)
+- [https://understandlegacycode.com/blog/key-points-of-working-effectively-with-legacy-code/](https://understandlegacycode.com/blog/key-points-of-working-effectively-with-legacy-code/)
 
-* [https://www.baeldung.com/mockito-argumentcaptor](https://www.baeldung.com/mockito-argumentcaptor)
+- [https://www.baeldung.com/mockito-argumentcaptor](https://www.baeldung.com/mockito-argumentcaptor)
 
-* [Mock Roles, not Objects](http://jmock.org/oopsla2004.pdf)
+- [Mock Roles, not Objects](http://jmock.org/oopsla2004.pdf)
 
-* [https://assertj.github.io/doc/](https://assertj.github.io/doc/)
+- [https://assertj.github.io/doc/](https://assertj.github.io/doc/)
 
-* [https://en.wikipedia.org/wiki/Mutation\_testing](https://en.wikipedia.org/wiki/Mutation_testing)
+- [https://en.wikipedia.org/wiki/Mutation_testing](https://en.wikipedia.org/wiki/Mutation_testing)
 
-* [Parameterized Tests with JUnit 5](https://www.baeldung.com/parameterized-tests-junit-5)
+- [Parameterized Tests with JUnit 5](https://www.baeldung.com/parameterized-tests-junit-5)
 
-* [ArchUnit](https://www.archunit.org/)
+- [ArchUnit](https://www.archunit.org/)
 
 # Follow Extreme Programming Practices
 
@@ -1043,6 +1043,7 @@ Two heads are better than one.
 Don’t ever push code unless it is worthy to be added to your CV.
 
 Let me quote Kent Beck here:
+
 > **For each desired change, make the change easy (warning: this may be hard), then make the easy change**
 
 ### Test-first
@@ -1053,13 +1054,13 @@ Nothing screams "mess" louder than "I finished the development, now I will write
 
 ### References
 
-* [Extreme Programming](https://en.wikipedia.org/wiki/Extreme_programming)
+- [Extreme Programming](https://en.wikipedia.org/wiki/Extreme_programming)
 
-* [https://amzn.eu/d/4riNe3l](https://amzn.eu/d/4riNe3l)
+- [https://amzn.eu/d/4riNe3l](https://amzn.eu/d/4riNe3l)
 
 # Test microservices effectively
 
-![](assets/20240406-tg/image-20230327-134922.png)
+![](images/image-20230327-134922.png)
 
 There's a reason why I labeled the test pyramid at the beginning of the article as "classic."
 I wanted to avoid "monolithic."
@@ -1075,25 +1076,25 @@ hence it suggests a higher quantity of integration tests with unit tests sprinkl
 
 ### Honeycomb Testing Strategy
 
-![](assets/20240406-tg/image-20230327-120207.png)
+![](images/image-20230327-120207.png)
 
-* Write a lot of integration tests and write them early
+- Write a lot of integration tests and write them early
 
-* “Attack” complex isolated parts with unit tests
+- “Attack” complex isolated parts with unit tests
 
-* Sprinkle some system e2e tests on top
+- Sprinkle some system e2e tests on top
 
 ### Test the entire microservice in isolation
 
 Use [https://wiremock.org/](https://wiremock.org/)/[https://www.mock-server.com/](https://www.mock-server.com/)
 and [https://www.testcontainers.org/](https://www.testcontainers.org/) to mock/emulate **all** external dependencies
 
-### Start the entire service ***without internal Mocks***
+### Start the entire service **_without internal Mocks_**
 
-* Reuse the test setup as much as possible by introducing the base test class with all
+- Reuse the test setup as much as possible by introducing the base test class with all
   the necessary fixtures to start the service.
 
-* Be careful about shared stateful parts, like DB, Kafka, RabbitMQ, etc.
+- Be careful about shared stateful parts, like DB, Kafka, RabbitMQ, etc.
   Clean them **before and after** if necessary.  
   Pro tip: cleaning state BEFORE the test provides you with a better debugging experience.
 
@@ -1130,29 +1131,29 @@ But everything else signals a high level of unprofessionalism from the engineers
 
 ### References
 
-* [https://engineering.atspotify.com/2018/01/testing-of-microservices/](https://engineering.atspotify.com/2018/01/testing-of-microservices/)
+- [https://engineering.atspotify.com/2018/01/testing-of-microservices/](https://engineering.atspotify.com/2018/01/testing-of-microservices/)
 
-* [https://www.testcontainers.org/](https://www.testcontainers.org/)
+- [https://www.testcontainers.org/](https://www.testcontainers.org/)
 
-* [https://www.youtube.com/watch?v=0kXEwo0XFaY](https://www.youtube.com/watch?v=0kXEwo0XFaY)
+- [https://www.youtube.com/watch?v=0kXEwo0XFaY](https://www.youtube.com/watch?v=0kXEwo0XFaY)
 
-* [https://wiremock.org/](https://wiremock.org/)
+- [https://wiremock.org/](https://wiremock.org/)
 
-* [https://www.mock-server.com/](https://www.mock-server.com/)
+- [https://www.mock-server.com/](https://www.mock-server.com/)
 
-* [https://maven.apache.org/surefire/maven-failsafe-plugin/](https://maven.apache.org/surefire/maven-failsafe-plugin/)
+- [https://maven.apache.org/surefire/maven-failsafe-plugin/](https://maven.apache.org/surefire/maven-failsafe-plugin/)
 
 # Other materials
 
-* [https://www.youtube.com/watch?v=1Z\_h55jMe-M](https://www.youtube.com/watch?v=1Z_h55jMe-M) - must watch, if you’re
+- [https://www.youtube.com/watch?v=1Z_h55jMe-M](https://www.youtube.com/watch?v=1Z_h55jMe-M) - must watch, if you’re
   not familiar with Victor Rentea - welcome to the club, buddy
 
-* [https://www.youtube.com/watch?v=fr1E9aVnBxw](https://www.youtube.com/watch?v=fr1E9aVnBxw)
+- [https://www.youtube.com/watch?v=fr1E9aVnBxw](https://www.youtube.com/watch?v=fr1E9aVnBxw)
 
-* [https://www.youtube.com/watch?v=F8Gc8Nwf0yk](https://www.youtube.com/watch?v=F8Gc8Nwf0yk)
+- [https://www.youtube.com/watch?v=F8Gc8Nwf0yk](https://www.youtube.com/watch?v=F8Gc8Nwf0yk)
 
-* [https://amzn.eu/d/bLybGSN](https://amzn.eu/d/bLybGSN) - absolute classic, must-read, testing covered in Chapter 9
+- [https://amzn.eu/d/bLybGSN](https://amzn.eu/d/bLybGSN) - absolute classic, must-read, testing covered in Chapter 9
 
-* [https://amzn.eu/d/48lnk1H](https://amzn.eu/d/48lnk1H) - amazing book by one and only Martin Fowler. Must read.
+- [https://amzn.eu/d/48lnk1H](https://amzn.eu/d/48lnk1H) - amazing book by one and only Martin Fowler. Must read.
 
 …to be continued

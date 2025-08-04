@@ -1,35 +1,38 @@
-import { getAllPosts, getPostBySlug } from '@/lib/posts'
-import { notFound } from 'next/navigation'
-import Layout from '@/components/Layout'
-import CodeEnhancer from '@/components/CodeEnhancer'
-import Link from 'next/link'
-import { Metadata } from 'next'
+import { getAllPosts, getPostBySlug } from '@/lib/posts';
+import { notFound } from 'next/navigation';
+import Layout from '@/components/Layout';
+import CodeEnhancer from '@/components/CodeEnhancer';
+import Link from 'next/link';
+import { Metadata } from 'next';
 
 interface BlogPostPageProps {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts()
-  
-  return posts.map((post) => ({
+  const posts = await getAllPosts();
+
+  return posts.map(post => ({
     slug: post.slug,
-  }))
+  }));
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const { slug } = await params
-  const post = await getPostBySlug(slug)
-  
+export async function generateMetadata({
+  params,
+}: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+
   if (!post) {
     return {
       title: 'Post Not Found',
-    }
+    };
   }
 
-  const baseUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://buyallmemes.com' 
-    : 'http://localhost:3000'
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://buyallmemes.com'
+      : 'http://localhost:3000';
 
   return {
     title: `${post.title} - BuyAllMemes Blog`,
@@ -47,20 +50,19 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: post.title,
       description: post.excerpt,
     },
-  }
+  };
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params
+  const { slug } = await params;
   const [post, allPosts] = await Promise.all([
     getPostBySlug(slug),
-    getAllPosts()
-  ])
+    getAllPosts(),
+  ]);
 
   if (!post) {
-    notFound()
+    notFound();
   }
-
 
   return (
     <Layout>
@@ -69,9 +71,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <aside className="sidebar">
           <h2 className="sidebar-title">All Posts</h2>
           <ul className="sidebar-list">
-            {allPosts.map((p) => (
+            {allPosts.map(p => (
               <li key={p.slug} className="sidebar-item">
-                <Link 
+                <Link
                   href={`/blog/${p.slug}`}
                   className={`sidebar-link ${slug === p.slug ? 'active' : ''}`}
                 >
@@ -91,8 +93,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="article-date">{post.formattedDate}</div>
             </div>
           </header>
-          
-          <div 
+
+          <div
             className="article-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
@@ -100,5 +102,5 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </main>
       </div>
     </Layout>
-  )
+  );
 }

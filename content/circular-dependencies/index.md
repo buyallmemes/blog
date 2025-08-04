@@ -10,13 +10,14 @@ publishing [Practical Dependency Inversion Principle](https://www.buyallmemes.co
 article, I received amazing feedback from one of my dear colleagues.
 
 It was in the form of a question:
+
 > ...there is another problem, the cross-dependency between modules/packages.
 >
->What are your thoughts on this?
+> What are your thoughts on this?
 
 The question was premised on the schema that looks like this:
 
-![img_1.png](assets/20240412-cd/img_1.png)
+![img_1.png](images/img_1.png)
 
 With code structure like this:
 
@@ -104,7 +105,7 @@ and `UserModule` is... well, further from the core of the business logic.
 This is where the political card has to be played
 because the team that manages `UserModule` might not agree on doubling down on `NotificationModule` dependency:
 
-![img.png](assets/20240412-cd/img.png)
+![img.png](images/img.png)
 
 With the code structure like this:
 
@@ -170,7 +171,7 @@ This is a tricky one because it's very easy to get it wrong and make things wors
 The approach is to extract functionalities that produce circular dependencies into a new even more high-level module.
 And invert the dependency from it.
 
-![img_2.png](assets/20240412-cd/img_2.png)
+![img_2.png](images/img_2.png)
 
 The code structure:
 
@@ -179,7 +180,7 @@ The code structure:
 │   ├── aggregator
 │   │   ├── AggregatorUser.java
 │   │   ├── AggregatorUserRetriever.java
-│   │   │  
+│   │   │
 │   │   ├── AggregatorNotification.java
 │   │   ├── AggregatorNotificationRetriever.java
 │   │   │
@@ -214,7 +215,7 @@ And the answer is simple — direction of dependency inversion.
 It might sound like a brilliant idea to introduce `AggregatorModule` and to make it depend on
 both `UserModule` and `NotificationModule`:
 
-![img_3.png](assets/20240412-cd/img_3.png)
+![img_3.png](images/img_3.png)
 
 With code structure like this:
 
@@ -245,7 +246,7 @@ Invoke `NotificationModule`.
 
 So the more realistic dependency schema should look like this:
 
-![img_4.png](assets/20240412-cd/img_4.png)
+![img_4.png](images/img_4.png)
 
 So instead of one circular dependency between `UserModule` and `NotificationModule`,
 there are two, and they are even more distributed!
@@ -255,9 +256,7 @@ COVID? Anyone?
 So yeah, be careful.
 In this case, inversion of dependency could do more harm than good.
 
-
 And this is exactly why I started with the [Tactical Merge](#tactical-merge).
 Although it seems like the most extreme, it guarantees to work.
 The presence of circular dependency signals a fundamental issue with the design,
 and addressing it only partially might provide temporary relief but won't offer lasting fix.
-

@@ -14,6 +14,7 @@ A high-performance blog platform showcasing software engineering articles, tutor
 ## 🛠️ Technology Stack
 
 ### Frontend
+
 - **Next.js 15.4.4** - React framework with App Router
 - **React 19.1.1** - Latest React with concurrent features
 - **TypeScript 5.8.3** - Type-safe development
@@ -21,6 +22,7 @@ A high-performance blog platform showcasing software engineering articles, tutor
 - **Headless UI** - Unstyled, accessible UI components
 
 ### Content & Features
+
 - **Markdown Processing** - Gray Matter + Remark for frontmatter parsing
 - **Syntax Highlighting** - Prism.js with copy-to-clipboard
 - **Dark/Light Theme** - System preference detection
@@ -28,6 +30,7 @@ A high-performance blog platform showcasing software engineering articles, tutor
 - **SEO Optimized** - OpenGraph meta tags, structured data
 
 ### Development & Testing
+
 - **ESLint 9.18.0** - Code linting with Next.js config
 - **Playwright** - End-to-end testing
 - **GitHub Actions** - Automated CI/CD pipeline
@@ -57,6 +60,7 @@ blog/
 ## 🚀 Development
 
 ### Prerequisites
+
 - **Node.js 22+** (LTS recommended)
 - **npm 10+**
 
@@ -108,10 +112,10 @@ npm run test:headed
 
 ```markdown
 ---
-title: "Your Post Title"
-date: "2025-01-28"
-excerpt: "Brief description of the post"
-tags: ["tag1", "tag2"]
+title: 'Your Post Title'
+date: '2025-01-28'
+excerpt: 'Brief description of the post'
+tags: ['tag1', 'tag2']
 ---
 
 Your markdown content here...
@@ -127,7 +131,7 @@ Your markdown content here...
 
 - **Code blocks** with syntax highlighting
 - **Images** with proper sizing and optimization
-- **Links** with external link indicators  
+- **Links** with external link indicators
 - **Headings** with anchor links
 - **Lists** and **blockquotes**
 - **Tables** with responsive styling
@@ -161,7 +165,7 @@ const config: Config = {
       },
     },
   },
-}
+};
 ```
 
 ## 🚀 Deployment
@@ -215,12 +219,14 @@ npx playwright show-report
 ## 📊 Performance
 
 ### Lighthouse Scores
+
 - **Performance**: 95+
 - **Accessibility**: 95+
 - **Best Practices**: 95+
 - **SEO**: 95+
 
 ### Bundle Analysis
+
 - **Total JS**: ~99.6KB gzipped
 - **First Load**: ~104KB per page
 - **Static Generation**: 11 pages pre-rendered

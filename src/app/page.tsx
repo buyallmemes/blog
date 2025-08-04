@@ -1,13 +1,12 @@
-import { getAllPosts, getLatestPost } from '@/lib/posts'
-import Layout from '@/components/Layout'
-import Link from 'next/link'
+import { getAllPosts, getLatestPost } from '@/lib/posts';
+import Layout from '@/components/Layout';
+import Link from 'next/link';
 
 export default async function HomePage() {
   const [posts, latestPost] = await Promise.all([
     getAllPosts(),
-    getLatestPost()
-  ])
-
+    getLatestPost(),
+  ]);
 
   return (
     <Layout>
@@ -16,9 +15,9 @@ export default async function HomePage() {
         <aside className="sidebar">
           <h2 className="sidebar-title">All Posts</h2>
           <ul className="sidebar-list">
-            {posts.map((post) => (
+            {posts.map(post => (
               <li key={post.slug} className="sidebar-item">
-                <Link 
+                <Link
                   href={`/blog/${post.slug}`}
                   className={`sidebar-link ${latestPost?.slug === post.slug ? 'active' : ''}`}
                 >
@@ -40,8 +39,8 @@ export default async function HomePage() {
                   <div className="article-date">{latestPost.formattedDate}</div>
                 </div>
               </header>
-              
-              <div 
+
+              <div
                 className="article-content"
                 dangerouslySetInnerHTML={{ __html: latestPost.content }}
               />
@@ -55,5 +54,5 @@ export default async function HomePage() {
         </main>
       </div>
     </Layout>
-  )
+  );
 }

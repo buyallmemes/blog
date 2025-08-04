@@ -97,6 +97,7 @@ Sure, the structure of the project and some approaches may differ, but the code 
 - And tests look identical
 
 And one more—_everything is formatted the same_.
+
 > And don't get me started on the formatting wars...  
 > Nothing I hate more than pointless styleguide discussions.  
 > All those hours and energy wasted debating tabs vs spaces,
@@ -181,6 +182,7 @@ func main() {
 ```
 
 As Hello World as it gets.
+
 > You'd better get used to shortcutting everything.
 > There's no time to type `function` - it's a `func` now.  
 > I guess it's to prevent people from mixing Go with JavaScript.
@@ -208,8 +210,6 @@ and then execute the `main` function(`public static void main` sends its regards
 
 This should print `Hello World!`.
 Interesting? Not really.
-
-
 
 > Worth mentioning that while a directory defines a single package, Go has a neat convention for tests.
 > You can put test files (e.g., something_test.go) in the same directory.

@@ -17,9 +17,9 @@ Most developers have heard or read something about them to some extent.
 From my experience, most devs (myself included) stop after **SO**, leaving **LID** for later days, because they are
 confusing.
 
-* Who the hell is Liskov? And whom she's substituting?
-* Why do we need to segregate anything — isn't it a bad thing these days?
-* And which dependencies should we invert and how? And what about dependency injection?
+- Who the hell is Liskov? And whom she's substituting?
+- Why do we need to segregate anything — isn't it a bad thing these days?
+- And which dependencies should we invert and how? And what about dependency injection?
 
 In this article, I'm going to shed some light on the **Dependency Inversion Principle**, since it's the
 most impactful and addicting, in my opinion.
@@ -169,7 +169,7 @@ in relation to something like Assembly language which is the lowest of them all.
 
 And so the dependency tree might look something like this:
 
-![before inversion](assets/20240406-pdip/pre_inversion.png)
+![before inversion](images/pre_inversion.png)
 
 Dependency direction goes with the direction of an arrow.
 Everything directly or transitively depends on `UserModule`.
@@ -275,7 +275,7 @@ It abstracts the database on behalf of other modules.
 And so the direction of the dependency between `NotificationModule` and `UserModule` is inverted.
 Given that we apply the inversion to all dependencies;
 the dependency tree might look like this:
-![after inversion](assets/20240406-pdip/post_inversion.png)
+![after inversion](images/post_inversion.png)
 
 Not only does the system no longer directly depend on `UserModule`.
 But the transitive dependencies are also much more relaxed.
@@ -365,6 +365,7 @@ We have two options, and two options only:
 
    How do you think those several dozens of public methods were added?
    Exactly like that.
+
 2. Inverse dependency.
    We are not going to allow mess into our new `NotificationModule` by any means necessary.
    Our new module is too innocent to witness the monstrosity `UserModule` has become.

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Clean, Functional Design for Developers */
 :root {
@@ -30,7 +30,9 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial,
+    sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: var(--text);
@@ -64,11 +66,32 @@ body {
   align-items: center;
 }
 
+.header-left {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
 .header-title {
   font-size: 20px;
   font-weight: 600;
   color: var(--text);
   text-decoration: none;
+}
+
+.lets-talk-link {
+  padding: 6px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.lets-talk-link:hover {
+  background: var(--accent);
+  color: var(--bg);
 }
 
 .header-nav {
@@ -319,7 +342,6 @@ body {
   padding: 0;
 }
 
-
 /* Lists */
 .article-content ul,
 .article-content ol {
@@ -393,18 +415,18 @@ body {
   .article-title {
     font-size: 24px;
   }
-  
+
   .article-meta {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .sidebar {
     position: static;
     order: 2;
   }
-  
+
   .article {
     order: 1;
   }
@@ -482,4 +504,43 @@ div.code-toolbar > .toolbar button:hover {
 /* Hide any copy buttons that appear below code blocks */
 .copy-to-clipboard-button {
   display: none !important;
+}
+
+/* Contact buttons in sidebar */
+.sidebar-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-button {
+  display: block;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  background: var(--bg);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.contact-button:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--bg-secondary);
+}
+
+.contact-button.primary {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.contact-button.primary:hover {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
 }

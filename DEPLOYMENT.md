@@ -38,10 +38,10 @@ frontend:
 
 Configure these environment variables in the Amplify console:
 
-| Variable | Value | Description |
-|----------|-------|-------------|
+| Variable               | Value                     | Description                  |
+| ---------------------- | ------------------------- | ---------------------------- |
 | `NEXT_PUBLIC_SITE_URL` | `https://buyallmemes.com` | Site URL for SEO and sharing |
-| `NODE_ENV` | `production` | Node environment |
+| `NODE_ENV`             | `production`              | Node environment             |
 
 ### 3. Domain Configuration
 
@@ -75,6 +75,7 @@ ls -la out/
 ```
 
 Expected output structure:
+
 ```
 out/
 ├── _next/           # Next.js assets
@@ -100,14 +101,17 @@ The configuration includes several optimizations:
 ## Monitoring
 
 ### Build Logs
+
 - Access build logs in Amplify Console → Build history
 - Monitor build time and bundle size
 
 ### Performance Metrics
+
 - Use Lighthouse for performance auditing
 - Monitor Core Web Vitals in production
 
 ### Error Monitoring
+
 - Check Amplify build logs for deployment issues
 - Monitor 404 errors through analytics
 

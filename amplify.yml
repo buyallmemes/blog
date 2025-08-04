@@ -3,19 +3,43 @@ frontend:
   phases:
     preBuild:
       commands:
+        - echo "Installing dependencies..."
         - npm ci
+        
+        # Install Playwright browsers for testing
+        - echo "Installing Playwright browsers..."
+        - npx playwright install --with-deps chromium
+        
     build:
       commands:
+        # Code quality checks
+        - echo "Running code formatting check..."
+        - npm run format:check
+        
+        - echo "Running ESLint..."
+        - npm run lint
+        
+        # TypeScript type checking
+        - echo "Running TypeScript type checking..."
+        - npx tsc --noEmit
+        
+        # Run tests before building
+        - echo "Running Playwright E2E tests..."
+        - npm test
+        
+        # Build the application
+        - echo "Building Next.js application..."
         - npm run build
+        
   artifacts:
     baseDirectory: .next
     files:
       - '**/*'
+      
   cache:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
-  buildSettings:
-    commands:
-      - npm run build
+      - ~/.cache/ms-playwright/**/*  # Cache Playwright browsers
+      
   framework: 'Next.js - SSR'

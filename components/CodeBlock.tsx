@@ -1,35 +1,43 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { useState } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import {
+  oneDark,
+  oneLight,
+} from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeBlockProps {
-  children: string
-  className?: string
-  fileName?: string
+  children: string;
+  className?: string;
+  fileName?: string;
 }
 
-export default function CodeBlock({ children, className, fileName }: CodeBlockProps) {
-  const [copied, setCopied] = useState(false)
-  
+export default function CodeBlock({
+  children,
+  className,
+  fileName,
+}: CodeBlockProps) {
+  const [copied, setCopied] = useState(false);
+
   // Extract language from className (e.g. "language-typescript" -> "typescript")
-  const language = className?.replace('language-', '') || 'text'
-  
+  const language = className?.replace('language-', '') || 'text';
+
   // Get theme from CSS custom properties
-  const isDark = typeof window !== 'undefined' 
-    ? document.documentElement.classList.contains('dark')
-    : false
+  const isDark =
+    typeof window !== 'undefined'
+      ? document.documentElement.classList.contains('dark')
+      : false;
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(children)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      await navigator.clipboard.writeText(children);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err)
+      console.error('Failed to copy:', err);
     }
-  }
+  };
 
   return (
     <div className="relative group">
@@ -60,5 +68,5 @@ export default function CodeBlock({ children, className, fileName }: CodeBlockPr
         {children}
       </SyntaxHighlighter>
     </div>
-  )
+  );
 }
