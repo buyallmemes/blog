@@ -19,7 +19,20 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "analyze": "npm run build && npx @next/bundle-analyzer out",
-    "clean": "rm -rf .next out node_modules/.cache"
+    "clean": "rm -rf .next out node_modules/.cache",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,scss,sass}": [
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",
