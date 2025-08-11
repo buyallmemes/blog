@@ -1,0 +1,12 @@
+/* Test file for pre-commit formatting */
+.test {
+  color: red;
+  background: blue;
+  margin: 0;
+  padding: 0;
+}
+.another-test {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
