@@ -2,6 +2,7 @@ import { getAllPosts, getPostBySlug } from '@/lib/posts';
 import { notFound } from 'next/navigation';
 import Layout from '@/components/Layout';
 import CodeEnhancer from '@/components/CodeEnhancer';
+import { ArticleStructuredData } from '@/components/StructuredData';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
@@ -34,21 +35,51 @@ export async function generateMetadata({
       ? 'https://buyallmemes.com'
       : 'http://localhost:3000';
 
+  // Convert date for ISO format
+  let isoDate: string;
+  if (post.date.includes('.')) {
+    const [day, month, year] = post.date.split('.');
+    isoDate = new Date(
+      parseInt(year),
+      parseInt(month) - 1,
+      parseInt(day)
+    ).toISOString();
+  } else {
+    isoDate = new Date(post.date).toISOString();
+  }
+
   return {
-    title: `${post.title} - BuyAllMemes Blog`,
+    title: post.title,
     description: post.excerpt,
+    authors: [
+      {
+        name: 'Mark Fenderov',
+        url: 'https://www.linkedin.com/in/mark-fenderov/',
+      },
+    ],
+    keywords: [
+      'software engineering',
+      'development',
+      'programming',
+      'technology',
+    ],
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       url: `${baseUrl}/blog/${post.slug}`,
       siteName: 'BuyAllMemes Blog',
       type: 'article',
-      publishedTime: post.date,
+      publishedTime: isoDate,
+      authors: ['Mark Fenderov'],
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
+      creator: '@markfenderov',
     },
   };
 }
@@ -65,42 +96,48 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <Layout>
-      <div className="main">
-        {/* Sidebar */}
-        <aside className="sidebar">
-          <h2 className="sidebar-title">All Posts</h2>
-          <ul className="sidebar-list">
-            {allPosts.map(p => (
-              <li key={p.slug} className="sidebar-item">
-                <Link
-                  href={`/blog/${p.slug}`}
-                  className={`sidebar-link ${slug === p.slug ? 'active' : ''}`}
-                >
-                  {p.title}
-                  <div className="sidebar-date">{p.formattedDate}</div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </aside>
+    <>
+      <ArticleStructuredData post={post} />
+      <Layout>
+        <div className="main">
+          {/* Sidebar */}
+          <aside className="sidebar">
+            <h2 className="sidebar-title">All Posts</h2>
+            <ul className="sidebar-list">
+              {allPosts.map(p => (
+                <li key={p.slug} className="sidebar-item">
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className={`sidebar-link ${slug === p.slug ? 'active' : ''}`}
+                  >
+                    {p.title}
+                    <div className="sidebar-date">{p.formattedDate}</div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </aside>
 
-        {/* Main Content */}
-        <main className="article">
-          <header className="article-header">
-            <h1 className="article-title">{post.title}</h1>
-            <div className="article-meta">
-              <div className="article-date">{post.formattedDate}</div>
-            </div>
-          </header>
+          {/* Main Content */}
+          <main className="article">
+            <header className="article-header">
+              <h1 className="article-title">{post.title}</h1>
+              <div className="article-meta">
+                <div className="article-date">{post.formattedDate}</div>
+                <div className="article-reading-time">
+                  {Math.ceil(post.wordCount / 200)} min read
+                </div>
+              </div>
+            </header>
 
-          <div
-            className="article-content"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
-          <CodeEnhancer />
-        </main>
-      </div>
-    </Layout>
+            <div
+              className="article-content"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+            <CodeEnhancer />
+          </main>
+        </div>
+      </Layout>
+    </>
   );
 }
