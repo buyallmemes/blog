@@ -214,7 +214,7 @@ test.describe("Let's Talk Page", () => {
 
     // Check title
     await expect(page).toHaveTitle(
-      "Let's Talk - Architecture Consulting | Mark Fenderov"
+      "Let's Talk - Architecture Consulting | Mark Fenderov - BuyAllMemes Blog"
     );
 
     // Check meta description (if accessible via page evaluation)
