@@ -690,49 +690,6 @@ body {
   opacity: 1;
 }
 
-/* PrismJS Copy Button Styling */
-/* Hide the default toolbar */
-div.code-toolbar {
-  position: relative;
-}
-
-div.code-toolbar > .toolbar {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-
-div.code-toolbar:hover > .toolbar {
-  opacity: 1;
-}
-
-div.code-toolbar > .toolbar .toolbar-item {
-  display: inline-block;
-}
-
-div.code-toolbar > .toolbar button {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 11px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-family: inherit;
-}
-
-div.code-toolbar > .toolbar button:hover {
-  background: var(--bg-secondary);
-  color: var(--text);
-}
-
-/* Hide any copy buttons that appear below code blocks */
-.copy-to-clipboard-button {
-  display: none !important;
-}
-
 /* Contact buttons in sidebar */
 .sidebar-contact {
   display: flex;

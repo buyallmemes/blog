@@ -24,10 +24,10 @@ A high-performance blog platform showcasing software engineering articles, tutor
 ### Content & Features
 
 - **Markdown Processing** - Gray Matter + Remark for frontmatter parsing
-- **Syntax Highlighting** - Prism.js with copy-to-clipboard
-- **Dark/Light Theme** - System preference detection
+- **Code Enhancement** - Copy-to-clipboard functionality for code blocks
+- **Dark/Light Theme** - System preference detection with toggle
 - **Social Sharing** - LinkedIn, GitHub integration
-- **SEO Optimized** - OpenGraph meta tags, structured data
+- **SEO Optimized** - OpenGraph meta tags, structured data, sitemaps
 
 ### Development & Testing
 
@@ -41,19 +41,25 @@ A high-performance blog platform showcasing software engineering articles, tutor
 ```
 blog/
 ├── src/app/                 # Next.js App Router
+│   ├── api/content-images/ # Image serving API route
 │   ├── blog/[slug]/        # Dynamic blog post routes
+│   ├── lets-talk/          # Consulting page
 │   ├── layout.tsx          # Root layout component
 │   ├── page.tsx            # Homepage
 │   └── globals.css         # Global styles
 ├── components/             # React components
 │   ├── Layout.tsx          # Main layout with navigation
-│   ├── PostSidebar.tsx     # Blog post navigation
 │   ├── ThemeToggle.tsx     # Dark/light mode switcher
-│   └── CodeBlock.tsx       # Syntax highlighted code blocks
+│   ├── CodeEnhancer.tsx    # Copy-to-clipboard for code blocks
+│   ├── StructuredData.tsx  # SEO structured data
+│   └── ServiceStructuredData.tsx # Service page schema
 ├── lib/                    # Utility functions
 │   └── posts.ts            # Markdown processing utilities
-├── posts/                  # Markdown blog posts
-├── public/                 # Static assets (images, icons)
+├── content/                # Markdown blog posts
+│   └── [slug]/
+│       ├── index.md        # Post content
+│       └── images/         # Post-specific images (optional)
+├── public/                 # Static assets (favicon, etc)
 └── tests/                  # Playwright E2E tests
 ```
 
@@ -107,25 +113,25 @@ npm run test:headed
 
 ### Adding Blog Posts
 
-1. Create a new markdown file in `posts/` with format: `YYYYMMDD-slug.md`
-2. Add frontmatter:
+1. Create a new directory in `content/` with your desired slug: `content/your-post-slug/`
+2. Create `index.md` in that directory with frontmatter:
 
 ```markdown
 ---
 title: 'Your Post Title'
-date: '2025-01-28'
-excerpt: 'Brief description of the post'
-tags: ['tag1', 'tag2']
+date: 'DD.MM.YYYY'
 ---
 
 Your markdown content here...
 ```
 
-3. Add images to `public/images/` and reference them:
+3. Add images to `content/your-post-slug/images/` and reference them:
 
 ```markdown
-![Alt text](/images/your-image.png)
+![Alt text](images/your-image.png)
 ```
+
+**Note**: Images are automatically served via Next.js API route at `/blog/[slug]/images/[...path]`
 
 ### Supported Features
 
@@ -140,12 +146,7 @@ Your markdown content here...
 
 ### Environment Variables
 
-Create `.env.local` for local development:
-
-```bash
-# Optional: Analytics or external API keys
-NEXT_PUBLIC_GA_ID=your-google-analytics-id
-```
+No environment variables required for local development. The application works entirely with static content generation.
 
 ### Tailwind Customization
 
@@ -227,10 +228,10 @@ npx playwright show-report
 
 ### Bundle Analysis
 
-- **Total JS**: ~99.6KB gzipped
+- **Total JS**: ~99.7KB gzipped (optimized after cleanup)
 - **First Load**: ~104KB per page
-- **Static Generation**: 11 pages pre-rendered
-- **Build Time**: ~3 seconds
+- **Static Generation**: All blog posts + pages pre-rendered
+- **Build Time**: ~2 seconds (improved with Turbopack)
 
 ## 🤝 Contributing
 

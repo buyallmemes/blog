@@ -25,7 +25,7 @@ frontend:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
@@ -38,10 +38,11 @@ frontend:
 
 Configure these environment variables in the Amplify console:
 
-| Variable               | Value                     | Description                  |
-| ---------------------- | ------------------------- | ---------------------------- |
-| `NEXT_PUBLIC_SITE_URL` | `https://buyallmemes.com` | Site URL for SEO and sharing |
-| `NODE_ENV`             | `production`              | Node environment             |
+| Variable   | Value        | Description      |
+| ---------- | ------------ | ---------------- |
+| `NODE_ENV` | `production` | Node environment |
+
+**Note**: No additional environment variables required. Base URL is configured in layout.tsx.
 
 ### 3. Domain Configuration
 
@@ -67,34 +68,32 @@ npm ci
 # Run tests
 npm test
 
-# Build static export
+# Build application
 npm run build
 
-# Verify output directory
-ls -la out/
+# Verify build directory
+ls -la .next/
 ```
 
 Expected output structure:
 
 ```
-out/
-├── _next/           # Next.js assets
-├── blog/            # Blog post pages
-│   ├── let-go/
-│   ├── testing-guideline/
-│   └── ...
-├── images/          # Static images
-├── index.html       # Home page
-└── 404.html         # Error page
+.next/
+├── cache/           # Build cache
+├── server/          # Server-side code
+├── static/          # Static assets
+├── build-manifest.json
+├── export-marker.json
+└── prerender-manifest.json
 ```
 
 ## Performance Optimizations
 
 The configuration includes several optimizations:
 
-1. **Static Export**: Full static site generation
+1. **Static Generation**: Pre-rendered pages with SSR capabilities
 2. **Bundle Splitting**: Vendor chunks separated
-3. **Image Optimization**: Disabled for static export compatibility
+3. **Image Optimization**: Custom API route for content images
 4. **Caching**: Build cache enabled for faster rebuilds
 5. **Compression**: Automatic gzip compression by Amplify
 
@@ -151,8 +150,8 @@ Note: Headers configuration is ignored in static export mode, so these need to b
 
 ### Static Export Issues
 
-1. **Dynamic Routes**: Ensure all blog posts are generated at build time
-2. **API Routes**: Not supported in static export mode
+1. **Dynamic Routes**: All blog posts generated via generateStaticParams
+2. **API Routes**: Image serving route at /api/content-images
 3. **Server Components**: Client components marked with 'use client'
 
 ### Performance Issues
