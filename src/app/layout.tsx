@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import './globals.css';
 
 const roboto = Roboto({
@@ -74,9 +75,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const trackingId = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
+
   return (
     <html lang="en">
-      <body className={`${roboto.variable} antialiased`}>{children}</body>
+      <body className={`${roboto.variable} antialiased`}>
+        {trackingId && <GoogleAnalytics trackingId={trackingId} />}
+        {children}
+      </body>
     </html>
   );
 }
